@@ -1,0 +1,38 @@
+name: app Build
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build-client:
+    runs-on: [self-hosted, linux, x64, aws]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: apps/mashbak-app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/apps/mashbak-app/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies and Vite
+        run: |
+          cd ./apps/mashbak-app/
+          npm install
+
+      - name: Build client
+        run: |
+          cd ./apps/mashbak-app/
+          npm run build

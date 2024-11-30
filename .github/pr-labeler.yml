@@ -1,0 +1,4 @@
+feature: ['feature/backend/*', 'feature/frontend/*', 'feature/devops/*', 'feature/security/*']
+feat: ['feat/backend/*', 'feat/frontend/*', 'feat/devops/*', 'feat/security/*']
+fix: ['fix/backend/*', 'fix/frontend/*', 'fix/devops/*', 'fix/security/*']
+core: 'core/*'

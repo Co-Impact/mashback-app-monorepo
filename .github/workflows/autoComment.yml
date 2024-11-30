@@ -1,0 +1,18 @@
+name: Auto Comment
+
+on:
+  pull_request:
+    types: [opened]
+jobs:
+  auto-comment:
+    permissions: write-all
+    runs-on: [self-hosted, linux, x64, aws]
+    steps:
+      - uses: wow-actions/auto-comment@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pullRequestOpened: |
+            👋 @{{ author }}
+            Thank you for raising your pull request.
+            Please make sure you have set the label to "run tests" if you wish to run the CI/CD pipelines
+            👀 Pull request will not be approved until they passed all the checkes 👀
