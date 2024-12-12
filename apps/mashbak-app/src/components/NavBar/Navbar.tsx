@@ -41,6 +41,7 @@ export const Navbar: FC = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <div>just for test delete after this</div>
           <Typography
             variant="h6"
             noWrap
