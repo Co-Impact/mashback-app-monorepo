@@ -1,5 +1,4 @@
-'use client'
-import styles from "./page.module.css";
+"use client";
 
 // function urlBase64ToUint8Array(base64String: string) {
 //     const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -92,15 +91,24 @@ import styles from "./page.module.css";
 //         </div>
 //     )
 // }
+import { HomeCard } from "@/components/Card/HomeCard";
+import { Navbar } from "@/components/NavBar/Navbar";
+
 export default function Home() {
+  const cards = [
+    { label: "friends", path: "", content: "" },
+    { label: "friends", path: "", content: "" },
+    { label: "friends", path: "", content: "" },
+  ];
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-
+    <>
+      <Navbar />
+      <main>
+        {cards.map(({ label, path }, index) => (
+          <HomeCard key={index} path={path} label={label} />
+        ))}
       </main>
-      <footer className={styles.footer}>
-
-      </footer>
-    </div>
+      <footer></footer>
+    </>
   );
 }

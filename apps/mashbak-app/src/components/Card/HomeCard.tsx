@@ -1,12 +1,19 @@
-import {FC} from "react";
-import {Box} from "@mui/material";
+import { FC } from "react";
+import { Box } from "@mui/material";
+import Link from "next/link";
 
 interface Props {
-    label: string
+  label: string;
+  path: string;
 }
-export const HomeCard: FC<Props> = ({label}) => {
-return(
+export const HomeCard: FC<Props> = ({ label, path }) => {
+  return (
     <Box>
+      <Box>
         <label>{label}</label>
-</Box>
-)}
+        <Link href={path}>see more</Link>
+      </Box>
+      <Box>content</Box>
+    </Box>
+  );
+};
