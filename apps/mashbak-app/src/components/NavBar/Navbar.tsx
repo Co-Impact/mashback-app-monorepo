@@ -14,10 +14,12 @@ import {
 } from "@mui/material";
 import AdbIcon from "@mui/icons-material/Adb";
 import MenuIcon from "@mui/icons-material/Menu";
+import { settings } from "@/components/NavBar/Navbar.logic";
+import { useRouter } from "next/navigation";
 
 export const Navbar: FC = () => {
+  const router = useRouter();
   const pages = ["Products", "Pricing", "Blog"];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -41,7 +43,6 @@ export const Navbar: FC = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <div>just for test delete after this</div>
           <Typography
             variant="h6"
             noWrap
@@ -146,10 +147,10 @@ export const Navbar: FC = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              {settings.map((setting, index) => (
+                <MenuItem key={index} onClick={() => router.push(setting.path)}>
                   <Typography sx={{ textAlign: "center" }}>
-                    {setting}
+                    {setting.label}
                   </Typography>
                 </MenuItem>
               ))}
