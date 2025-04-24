@@ -96,14 +96,14 @@ import { Navbar } from "@/components/NavBar/Navbar";
 
 export default function Home() {
   const cards = [
-    { label: "friends", path: "", content: "" },
-    { label: "friends", path: "", content: "" },
-    { label: "friends", path: "", content: "" },
+    { label: "Poll", path: "poll", content: "" },
+    { label: "Jobs", path: "jobs", content: "" },
+    { label: "Events", path: "event", content: "" },
   ];
   return (
     <>
       <Navbar />
-      <main>
+      <main style={{ padding: "10px" }}>
         {cards.map(({ label, path }, index) => (
           <HomeCard key={index} path={path} label={label} />
         ))}

@@ -8,8 +8,25 @@ interface Props {
 }
 export const HomeCard: FC<Props> = ({ label, path }) => {
   return (
-    <Box>
-      <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "100%",
+        padding: "15px",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        margin: "10px",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row",
+        }}
+      >
         <label>{label}</label>
         <Link href={path}>see more</Link>
       </Box>
