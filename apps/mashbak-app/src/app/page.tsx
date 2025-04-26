@@ -1,5 +1,3 @@
-"use client";
-
 // function urlBase64ToUint8Array(base64String: string) {
 //     const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
 //     const base64 = (base64String + padding)
@@ -92,20 +90,67 @@
 //     )
 // }
 import { HomeCard } from "@/components/Card/HomeCard";
-import { Navbar } from "@/components/NavBar/Navbar";
+import { jobsItem } from "@/data/jobs";
+import { JobItem } from "@/components/Job/JobItem";
+import { eventsItems } from "@/data/events";
+import { EventItem } from "@/components/Event/EventItem";
+import { membersItems } from "@/data/members";
+import { Member } from "@/components/member/Member";
 
 export default function Home() {
   const cards = [
     { label: "Poll", path: "poll", content: "" },
-    { label: "Jobs", path: "jobs", content: "" },
-    { label: "Events", path: "event", content: "" },
+    {
+      label: "Jobs",
+      path: "jobs",
+      content: jobsItem.map(({ logo, position, company }, index) => (
+        <JobItem
+          key={index}
+          logo={logo}
+          position={position}
+          company={company}
+          path={""}
+        />
+      )),
+    },
+    {
+      label: "Events",
+      path: "event",
+      content: eventsItems.map(
+        ({ name, image, location, registration, date }, index) => (
+          <EventItem
+            key={index}
+            name={name}
+            location={location}
+            image={image}
+            date={date}
+            registration={registration}
+          />
+        ),
+      ),
+    },
+    {
+      label: "My Group",
+      path: "event",
+      content: membersItems.map(({ name, image, position }, index) => (
+        <Member
+          key={index}
+          name={name}
+          position={position}
+          profilePicture={image}
+          path={""}
+        />
+      )),
+      isRow: true,
+    },
   ];
   return (
     <>
-      <Navbar />
       <main style={{ padding: "10px" }}>
-        {cards.map(({ label, path }, index) => (
-          <HomeCard key={index} path={path} label={label} />
+        {cards.map(({ label, path, content, isRow }, index) => (
+          <HomeCard key={index} path={path} label={label} isRow={isRow}>
+            {content}
+          </HomeCard>
         ))}
       </main>
       <footer></footer>

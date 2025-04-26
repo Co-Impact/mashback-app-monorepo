@@ -3,9 +3,9 @@ services:
     name: monorepo-backend
     env: node
     plan: free
+    rootDir: apps/server
     buildCommand: npm install && npm run build
     startCommand: npm run start:dev
-    rootDir: apps/server
     envVars:
       - key: PORT
         value: 3001
