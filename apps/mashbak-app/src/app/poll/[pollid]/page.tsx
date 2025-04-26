@@ -1,15 +1,8 @@
 "use client";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Box, Typography } from "@mui/material";
 
-interface PollProps {
-  question: string;
-  options: string[];
-}
 const Poll: FC = () => {
-  const [selectedOption, setSelectedOption] = useState<number>(0);
-  const [hasVoted, setHasVoted] = useState(false);
-
   return (
     <Box
       sx={{
