@@ -16,7 +16,7 @@ interface JobProps {
   applyUrl: string;
 }
 
-const Job: FC = ({}) => {
+const Job: FC = () => {
   const JobData: Partial<JobProps> = {
     id: "fdgdfgsdfgs",
     name: "Frontend Developer",

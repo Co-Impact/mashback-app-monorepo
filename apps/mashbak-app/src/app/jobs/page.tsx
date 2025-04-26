@@ -1,7 +1,8 @@
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { JobCard } from "@/components/Card/JobCard";
+import { FC } from "react";
 
-const JobsPage = () => {
+const JobsPage: FC = () => {
   const jobContent = [
     {
       id: "asfasdfasd",
@@ -29,7 +30,7 @@ const JobsPage = () => {
     },
   ];
   return (
-    <Box>
+    <Container className={"page"}>
       <Box></Box>
       <Box>
         {jobContent.map(({ id, logo, positionName, companyName }, index) => (
@@ -42,7 +43,7 @@ const JobsPage = () => {
           />
         ))}
       </Box>
-    </Box>
+    </Container>
   );
 };
 export default JobsPage;

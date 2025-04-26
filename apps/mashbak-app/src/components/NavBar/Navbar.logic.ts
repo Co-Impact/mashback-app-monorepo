@@ -1,7 +1,20 @@
-export const settings: Array<{ label: string; path: string }> = [
+import { INavBarPage } from "@/components/NavBar/type";
+
+export const settings: Array<INavBarPage> = [
   {
     label: "Profile",
     path: "/profile",
+  },
+  {
+    label: "Logout",
+    path: "/logout",
+  },
+];
+
+export const navbarPages: Array<INavBarPage> = [
+  {
+    label: "Home",
+    path: "/",
   },
   {
     label: "Event",
@@ -19,10 +32,4 @@ export const settings: Array<{ label: string; path: string }> = [
     label: "group",
     path: "/group",
   },
-  {
-    label: "Logout",
-    path: "/logout",
-  },
 ];
-
-// [, ];

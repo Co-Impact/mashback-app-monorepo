@@ -1,9 +1,9 @@
+"use client";
 import { FC, MouseEvent, useState } from "react";
 import {
   AppBar,
   Avatar,
   Box,
-  Button,
   Container,
   IconButton,
   Menu,
@@ -12,14 +12,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import AdbIcon from "@mui/icons-material/Adb";
 import MenuIcon from "@mui/icons-material/Menu";
-import { settings } from "@/components/NavBar/Navbar.logic";
+import { navbarPages, settings } from "@/components/NavBar/Navbar.logic";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export const Navbar: FC = () => {
   const router = useRouter();
-  const pages = ["Products", "Pricing", "Blog"];
+
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -42,7 +42,6 @@ export const Navbar: FC = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -58,7 +57,7 @@ export const Navbar: FC = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Mashback
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -88,14 +87,13 @@ export const Navbar: FC = () => {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+              {navbarPages.map(({ label, path }, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                  <Link href={path}>{label}</Link>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -112,17 +110,13 @@ export const Navbar: FC = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Mashback
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
+            {navbarPages.map(({ label, path }, index) => (
+              <Link key={index} href={path}>
+                {label}
+              </Link>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>

@@ -1,9 +1,11 @@
+"use client";
 import { Box, TextField } from "@mui/material";
+import Image from "next/image";
 
 const LoginPage = () => {
   return (
     <Box>
-      <img src={""} alt={"LogoImage"} loading={"lazy"} />
+      <Image src={""} alt={"LogoImage"} loading={"lazy"} />
       <form>
         <TextField
           fullWidth

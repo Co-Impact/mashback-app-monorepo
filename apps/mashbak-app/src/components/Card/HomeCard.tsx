@@ -1,12 +1,14 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
 
 interface Props {
   label: string;
   path: string;
+  children?: ReactNode;
+  isRow?: boolean;
 }
-export const HomeCard: FC<Props> = ({ label, path }) => {
+export const HomeCard: FC<Props> = ({ label, path, children, isRow }) => {
   return (
     <Box
       sx={{
@@ -30,7 +32,9 @@ export const HomeCard: FC<Props> = ({ label, path }) => {
         <label>{label}</label>
         <Link href={path}>see more</Link>
       </Box>
-      <Box>content</Box>
+      <Box sx={(isRow && { display: "flex", flexDirection: "row" }) || {}}>
+        {children}
+      </Box>
     </Box>
   );
 };
