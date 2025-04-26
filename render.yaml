@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: monorepo-backend
+    name: backend
     env: node
     plan: free
     rootDir: apps/server
@@ -13,7 +13,7 @@ services:
         sync: false
 
   - type: web
-    name: monorepo-frontend
+    name: frontend
     env: node
     plan: free
     rootDir: apps/mashbak-app
