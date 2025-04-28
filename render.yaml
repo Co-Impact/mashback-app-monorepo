@@ -20,7 +20,7 @@ services:
     buildCommand: npm install && npm run build
     startCommand: npm run dev
     envVars:
-      - key: REACT_APP_API_URL
+      - key: NEXT_PORT
         value: https://monorepo-backend.onrender.com
 
   - type: web
@@ -31,5 +31,5 @@ services:
     buildCommand: npm install && npm run build
     startCommand: npm run dev
     envVars:
-      - key: REACT_APP_API_URL
+      - key: VITE_PORT
         value: https://monorepo-backend.onrender.com
