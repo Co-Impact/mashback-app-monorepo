@@ -7,9 +7,10 @@ import {
   TimelineDot,
   TimelineItem,
   timelineItemClasses,
-  TimelineOppositeContent,
   TimelineSeparator,
 } from "@mui/lab";
+import EventIcon from "@mui/icons-material/Event";
+import Divider from "@mui/material/Divider";
 
 const discussionPage = () => {
   const data = [
@@ -97,12 +98,6 @@ const discussionPage = () => {
         >
           {data.map(({ question, date, totalAnswers, id }, index) => (
             <TimelineItem key={index}>
-              <TimelineOppositeContent
-                sx={{ maxWidth: "130px" }}
-                color="textSecondary"
-              >
-                {date}
-              </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineDot />
                 <TimelineConnector />
@@ -113,6 +108,7 @@ const discussionPage = () => {
                     margin: "10px",
                     padding: "10px",
                     display: "flex",
+                    flexDirection: "column",
                     justifyContent: "space-between",
                   }}
                   component={Link}
@@ -121,7 +117,16 @@ const discussionPage = () => {
                   <Box>
                     <Typography>{question}</Typography>
                   </Box>
-                  <Chip label={`Total Answers: ${totalAnswers}`} />
+                  <Divider sx={{ margin: "4px 0" }} />
+                  <Box sx={{ display: "flex", gap: 1 }}>
+                    <Chip size={"small"} icon={<EventIcon />} label={date} />
+                    <Divider orientation={"vertical"} flexItem={true} />
+                    <Chip
+                      size={"small"}
+                      icon={<EventIcon />}
+                      label={totalAnswers}
+                    />
+                  </Box>
                 </Card>
               </TimelineContent>
             </TimelineItem>

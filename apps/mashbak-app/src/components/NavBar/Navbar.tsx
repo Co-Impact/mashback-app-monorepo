@@ -88,8 +88,8 @@ export const Navbar: FC = () => {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {navbarPages.map(({ label, path }, index) => (
-                <MenuItem key={index} onClick={handleCloseNavMenu}>
-                  <Link href={path}>{label}</Link>
+                <MenuItem key={index} onClick={() => router.push(path)}>
+                  {label}
                 </MenuItem>
               ))}
             </Menu>
@@ -122,7 +122,10 @@ export const Navbar: FC = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt="Remy Sharp"
+                  src="https://t3.ftcdn.net/jpg/02/99/04/20/360_F_299042079_vGBD7wIlSeNl7vOevWHiL93G4koMM967.jpg"
+                />
               </IconButton>
             </Tooltip>
             <Menu

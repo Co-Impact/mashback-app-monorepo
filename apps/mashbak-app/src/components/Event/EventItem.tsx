@@ -27,7 +27,7 @@ export const EventItem: FC<EventItemProps> = ({
   return (
     <Box
       component={Link}
-      href={`/events/${id}`}
+      href={`/event/${id}`}
       sx={{
         display: "flex",
         flexDirection: "row",
