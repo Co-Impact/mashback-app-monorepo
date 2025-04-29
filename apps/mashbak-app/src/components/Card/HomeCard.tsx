@@ -6,9 +6,8 @@ interface Props {
   label: string;
   path: string;
   children?: ReactNode;
-  isRow?: boolean;
 }
-export const HomeCard: FC<Props> = ({ label, path, children, isRow }) => {
+export const HomeCard: FC<Props> = ({ label, path, children }) => {
   return (
     <Box
       sx={{
@@ -27,14 +26,13 @@ export const HomeCard: FC<Props> = ({ label, path, children, isRow }) => {
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "row",
+          paddingBottom: "5px",
         }}
       >
         <label>{label}</label>
         <Link href={path}>see more</Link>
       </Box>
-      <Box sx={(isRow && { display: "flex", flexDirection: "row" }) || {}}>
-        {children}
-      </Box>
+      <Box>{children}</Box>
     </Box>
   );
 };

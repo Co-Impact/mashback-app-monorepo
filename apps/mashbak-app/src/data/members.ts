@@ -17,18 +17,15 @@ export const membersItems = [
     position: "Software Engineer",
   },
   {
-    image: "/images/members/ahmed.jpg",
+    image:
+      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
     name: "Ahmed",
     position: "Software Engineer",
   },
   {
-    image: "/images/members/jackson.jpg",
+    image:
+      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
     name: "Jackson",
-    position: "Software Engineer",
-  },
-  {
-    image: "/images/members/adam.jpg",
-    name: "Adam",
     position: "Software Engineer",
   },
 ];

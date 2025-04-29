@@ -95,10 +95,11 @@ import { JobItem } from "@/components/Job/JobItem";
 import { eventsItems } from "@/data/events";
 import { EventItem } from "@/components/Event/EventItem";
 import { membersItems } from "@/data/members";
-import { Member } from "@/components/member/Member";
+import { MembersCard } from "@/components/Card/MembersCard";
 
 export default function Home() {
   const cards = [
+    { label: "Discussion", path: "discussion", content: "" },
     { label: "Poll", path: "poll", content: "" },
     {
       label: "Jobs",
@@ -131,24 +132,15 @@ export default function Home() {
     },
     {
       label: "My Group",
-      path: "event",
-      content: membersItems.map(({ name, image, position }, index) => (
-        <Member
-          key={index}
-          name={name}
-          position={position}
-          profilePicture={image}
-          path={""}
-        />
-      )),
-      isRow: true,
+      path: "group",
+      content: <MembersCard members={membersItems} />,
     },
   ];
   return (
     <>
       <main style={{ padding: "10px" }}>
-        {cards.map(({ label, path, content, isRow }, index) => (
-          <HomeCard key={index} path={path} label={label} isRow={isRow}>
+        {cards.map(({ label, path, content }, index) => (
+          <HomeCard key={index} path={path} label={label}>
             {content}
           </HomeCard>
         ))}

@@ -1,48 +1,55 @@
 import { FC } from "react";
 import { Avatar, Box, Typography } from "@mui/material";
 import Link from "next/link";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 interface MemberProps {
   name: string;
   position: string;
+  company: string;
   profilePicture: string;
   path: string;
 }
-export const Member: FC<MemberProps> = ({
+export const MemberItem: FC<MemberProps> = ({
   name,
+  position,
+  company,
   profilePicture,
   path,
-  position,
 }) => {
   return (
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
+        padding: "5px",
+        margin: "4px 0",
+        gap: 2,
       }}
       component={Link}
       href={path}
     >
-      <Box>
-        <Avatar
-          sx={{ width: 56, height: 56 }}
-          src={profilePicture}
-          alt={name}
-        />
-      </Box>
+      <Avatar sx={{ width: 50, height: 50 }} src={profilePicture} alt={name} />
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          textAlign: "center",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
         }}
       >
-        <Typography>{name}</Typography>
-        <Typography>{position}</Typography>
+        <Box>
+          <Typography>{name}</Typography>
+          <Typography>
+            {position} | {company}
+          </Typography>
+        </Box>
+        <Box>
+          {/*<Typography sx={{ fontSize: "40px" }}>7</Typography>*/}
+          <ArrowForwardIosIcon />
+        </Box>
       </Box>
     </Box>
   );
