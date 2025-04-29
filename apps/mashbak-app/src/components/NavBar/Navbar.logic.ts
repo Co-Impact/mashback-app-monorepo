@@ -32,4 +32,12 @@ export const navbarPages: Array<INavBarPage> = [
     label: "group",
     path: "/group",
   },
+  {
+    label: "Discussion",
+    path: "/discussion",
+  },
+  {
+    label: "Members",
+    path: "/members",
+  },
 ];

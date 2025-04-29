@@ -11,7 +11,8 @@ import { FC } from "react";
 
 const DiscussionTimeline: FC = () => {
   const data = {
-    discussion: "Discussion",
+    discussion:
+      "How can students best balance academic responsibilities with personal growth?",
     events: [
       { date: "2023-10-01", label: "Event 1", userid: "User 1" },
       { date: "2023-10-02", label: "Event 2", userid: "User 2" },
@@ -23,7 +24,18 @@ const DiscussionTimeline: FC = () => {
   const { discussion, events } = data;
   return (
     <Container>
-      <Typography>{discussion}</Typography>
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: 2,
+          marginBottom: 2,
+        }}
+      >
+        <Typography color={"primary"}>{discussion}</Typography>
+      </Card>
       <Timeline position="alternate">
         {events.map((event, index) => (
           <TimelineItem key={index}>
@@ -35,9 +47,7 @@ const DiscussionTimeline: FC = () => {
             <TimelineContent sx={{ py: "12px", px: 2 }}>
               <Card sx={{ maxWidth: 345, boxShadow: 3 }}>
                 <CardContent>
-                  <Typography variant="h6" component="div">
-                    {event.label}
-                  </Typography>
+                  <Typography>{event.label}</Typography>
                   <Typography variant="body2" color="text.secondary">
                     {event.userid}
                   </Typography>

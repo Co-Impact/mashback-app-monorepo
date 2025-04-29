@@ -96,11 +96,35 @@ import { eventsItems } from "@/data/events";
 import { EventItem } from "@/components/Event/EventItem";
 import { membersItems } from "@/data/members";
 import { MembersCard } from "@/components/Card/MembersCard";
+import { pollItem } from "@/data/poll";
+import { PollItem } from "@/components/Poll/PollItem";
 
 export default function Home() {
   const cards = [
-    { label: "Discussion", path: "discussion", content: "" },
-    { label: "Poll", path: "poll", content: "" },
+    {
+      label: "Discussion",
+      path: "discussion",
+      content: (
+        <div>
+          <h1>Discussion</h1>
+          <p>Discussion content goes here.</p>
+        </div>
+      ),
+    },
+    {
+      label: "Poll",
+      path: "poll",
+      content: pollItem
+        .slice(0, 3)
+        .map(({ question, totalAnswers, id }, index) => (
+          <PollItem
+            key={index}
+            id={id}
+            question={question}
+            totalVotes={totalAnswers}
+          />
+        )),
+    },
     {
       label: "Jobs",
       path: "jobs",
@@ -120,12 +144,14 @@ export default function Home() {
       content: eventsItems.map(
         ({ name, image, location, registration, date }, index) => (
           <EventItem
+            userNumber={25}
             key={index}
             name={name}
             location={location}
             image={image}
             date={date}
             registration={registration}
+            id={"23"}
           />
         ),
       ),

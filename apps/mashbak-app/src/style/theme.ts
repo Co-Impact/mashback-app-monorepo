@@ -53,4 +53,12 @@ const theme = createTheme({
   },
 });
 
+export const hideOnMobileStyle = {
+  display: {
+    xs: "none",
+    sm: "none",
+    md: "block",
+  },
+};
+
 export default theme;

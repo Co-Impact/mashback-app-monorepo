@@ -1,7 +1,85 @@
-import { Box, Container } from "@mui/material";
+import { Box, Card, Chip, Container, Typography } from "@mui/material";
 import Link from "next/link";
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  timelineItemClasses,
+  TimelineOppositeContent,
+  TimelineSeparator,
+} from "@mui/lab";
 
 const discussionPage = () => {
+  const data = [
+    {
+      id: 1,
+      date: "2025-04-29",
+      question:
+        "Is social media more harmful than beneficial to mental health?",
+      totalAnswers: 0,
+    },
+    {
+      id: 2,
+      date: "2025-04-29",
+      question:
+        "Should college education be free for everyone? Why or why not?",
+      totalAnswers: 0,
+    },
+    {
+      id: 3,
+      date: "2025-04-29",
+      question:
+        "What role should AI and automation play in the future job market?",
+      totalAnswers: 0,
+    },
+    {
+      id: 4,
+      date: "2025-04-29",
+      question:
+        "How can students best balance academic responsibilities with personal growth?",
+      totalAnswers: 0,
+    },
+    {
+      id: 5,
+      date: "2025-04-29",
+      question: "Do grades accurately measure intelligence or learning?",
+      totalAnswers: 0,
+    },
+    {
+      id: 6,
+      date: "2025-04-29",
+      question: "Is cancel culture a form of accountability or censorship?",
+      totalAnswers: 0,
+    },
+    {
+      id: 7,
+      date: "2025-04-29",
+      question: "How should colleges address climate change on their campuses?",
+      totalAnswers: 0,
+    },
+    {
+      id: 8,
+      date: "2025-04-29",
+      question: "Should voting be mandatory in democratic societies?",
+      totalAnswers: 0,
+    },
+    {
+      id: 9,
+      date: "2025-04-29",
+      question:
+        "What is the impact of part-time jobs on students’ academic performance?",
+      totalAnswers: 0,
+    },
+    {
+      id: 10,
+      date: "2025-04-29",
+      question:
+        "Is it better to follow your passion or to choose a career based on job security?",
+      totalAnswers: 0,
+    },
+  ];
   return (
     <Container>
       <Box>
@@ -9,9 +87,46 @@ const discussionPage = () => {
         <p>Welcome to the discussion page!</p>
       </Box>
       <Box>
-        <Link href={`/discussion/sadfasd}`}>
-          <h1>Discussion List</h1>
-        </Link>
+        <Timeline
+          sx={{
+            [`& .${timelineItemClasses.root}:before`]: {
+              flex: 0,
+              padding: 0,
+            },
+          }}
+        >
+          {data.map(({ question, date, totalAnswers, id }, index) => (
+            <TimelineItem key={index}>
+              <TimelineOppositeContent
+                sx={{ maxWidth: "130px" }}
+                color="textSecondary"
+              >
+                {date}
+              </TimelineOppositeContent>
+              <TimelineSeparator>
+                <TimelineDot />
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>
+                <Card
+                  sx={{
+                    margin: "10px",
+                    padding: "10px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                  component={Link}
+                  href={`/discussion/${id}`}
+                >
+                  <Box>
+                    <Typography>{question}</Typography>
+                  </Box>
+                  <Chip label={`Total Answers: ${totalAnswers}`} />
+                </Card>
+              </TimelineContent>
+            </TimelineItem>
+          ))}
+        </Timeline>
       </Box>
     </Container>
   );

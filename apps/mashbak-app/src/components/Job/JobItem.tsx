@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Avatar, Box, Typography } from "@mui/material";
 import Link from "next/link";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 interface JobItemProps {
   logo: string;
@@ -21,14 +22,27 @@ export const JobItem: FC<JobItemProps> = ({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "space-between",
       }}
       component={Link}
       href={path}
     >
-      <Avatar src={logo} />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 4,
+        }}
+      >
+        <Avatar src={logo} />
+        <Box>
+          <Typography sx={{ fontSize: "20px" }}>{position}</Typography>
+          <Typography color={"textSecondary"}>{company}</Typography>
+        </Box>
+      </Box>
       <Box>
-        <Typography>{position}</Typography>
-        <Typography>{company}</Typography>
+        <ArrowForwardIosIcon />
       </Box>
     </Box>
   );
