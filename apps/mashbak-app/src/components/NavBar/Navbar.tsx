@@ -85,7 +85,7 @@ export const Navbar: FC = () => {
               sx={{ width: "300px", display: { xs: "block", md: "none" } }}
             >
               <List>
-                {navbarPages.map(({ label, path }, index) => (
+                {navbarPages.map(({ label, path, icon }, index) => (
                   <ListItem key={index}>
                     <ListItemButton
                       onClick={() => {
@@ -93,12 +93,7 @@ export const Navbar: FC = () => {
                         handleCloseNavMenu();
                       }}
                     >
-                      <ListItemIcon>
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="https://t3.ftcdn.net/jpg/02/99/04/20/360_F_299042079_vGBD7wIlSeNl7vOevWHiL93G4koMM967.jpg"
-                        />
-                      </ListItemIcon>
+                      <ListItemIcon>{icon}</ListItemIcon>
                       <ListItemText primary={label} />
                     </ListItemButton>
                   </ListItem>
