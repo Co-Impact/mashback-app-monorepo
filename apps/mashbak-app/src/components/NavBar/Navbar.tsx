@@ -5,7 +5,12 @@ import {
   Avatar,
   Box,
   Container,
+  Drawer,
   IconButton,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   Toolbar,
@@ -16,6 +21,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { navbarPages, settings } from "@/components/NavBar/Navbar.logic";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import List from "@mui/material/List";
 
 export const Navbar: FC = () => {
   const router = useRouter();
@@ -39,7 +45,7 @@ export const Navbar: FC = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -71,28 +77,34 @@ export const Navbar: FC = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
+            <Drawer
               id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
+              anchor={"left"}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
+              sx={{ width: "300px", display: { xs: "block", md: "none" } }}
             >
-              {navbarPages.map(({ label, path }, index) => (
-                <MenuItem key={index} onClick={() => router.push(path)}>
-                  {label}
-                </MenuItem>
-              ))}
-            </Menu>
+              <List>
+                {navbarPages.map(({ label, path }, index) => (
+                  <ListItem key={index}>
+                    <ListItemButton
+                      onClick={() => {
+                        router.push(path);
+                        handleCloseNavMenu();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src="https://t3.ftcdn.net/jpg/02/99/04/20/360_F_299042079_vGBD7wIlSeNl7vOevWHiL93G4koMM967.jpg"
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary={label} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Drawer>
           </Box>
           <Typography
             variant="h5"

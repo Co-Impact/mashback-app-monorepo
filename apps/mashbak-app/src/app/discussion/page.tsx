@@ -1,4 +1,4 @@
-import { Box, Card, Chip, Container, Typography } from "@mui/material";
+import { Avatar, Box, Card, Chip, Container, Typography } from "@mui/material";
 import Link from "next/link";
 import {
   Timeline,
@@ -11,6 +11,7 @@ import {
 } from "@mui/lab";
 import EventIcon from "@mui/icons-material/Event";
 import Divider from "@mui/material/Divider";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 
 const discussionPage = () => {
   const data = [
@@ -119,11 +120,22 @@ const discussionPage = () => {
                   </Box>
                   <Divider sx={{ margin: "4px 0" }} />
                   <Box sx={{ display: "flex", gap: 1 }}>
+                    <Chip
+                      avatar={
+                        <Avatar
+                          alt="Natacha"
+                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcMxLW5LbeJApiOdKAWdx7973rVC1iEUPtXg&s"
+                        />
+                      }
+                      size={"small"}
+                      label={"Natacha"}
+                    />
+                    <Divider orientation={"vertical"} flexItem={true} />
                     <Chip size={"small"} icon={<EventIcon />} label={date} />
                     <Divider orientation={"vertical"} flexItem={true} />
                     <Chip
                       size={"small"}
-                      icon={<EventIcon />}
+                      icon={<QuestionAnswerIcon />}
                       label={totalAnswers}
                     />
                   </Box>

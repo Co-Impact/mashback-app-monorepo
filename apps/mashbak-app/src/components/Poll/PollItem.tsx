@@ -40,7 +40,7 @@ export const PollItem: FC<Props> = ({ question, totalVotes, id }) => {
         >
           {question}
         </Typography>
-        <Chip icon={<HowToVoteIcon />} label={totalVotes} />
+        <Chip size={"small"} icon={<HowToVoteIcon />} label={totalVotes} />
       </Box>
       <Box>
         <ArrowForwardIosIcon />

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/NavBar/Navbar";
 import { Container } from "@mui/material";
 import { ReactNode } from "react";
+import LabelBottomNavigation from "@/components/ButtomNavigation/ButtonNavigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,11 +34,12 @@ export default function RootLayout({
         <Container
           sx={{
             padding: "10px",
-            margin: "5px 0",
+            margin: "45px 0",
           }}
         >
           {children}
         </Container>
+        <LabelBottomNavigation />
       </body>
     </html>
   );

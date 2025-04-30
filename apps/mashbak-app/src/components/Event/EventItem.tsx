@@ -62,7 +62,12 @@ export const EventItem: FC<EventItemProps> = ({
             label="register required"
           />
         )}
-        <Chip icon={<PersonIcon />} color={"info"} label={userNumber} />
+        <Chip
+          size={"small"}
+          icon={<PersonIcon />}
+          color={"info"}
+          label={userNumber}
+        />
       </Box>
       <Box>
         <ArrowForwardIosIcon />

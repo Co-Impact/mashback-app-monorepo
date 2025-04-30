@@ -1,5 +1,14 @@
 import { FC } from "react";
-import { Avatar, Box, Button, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Chip,
+  Container,
+  Typography,
+} from "@mui/material";
+import Divider from "@mui/material/Divider";
 
 interface JobProps {
   id: string;
@@ -36,19 +45,50 @@ const Job: FC = () => {
     ],
   };
   return (
-    <Box>
-      <Avatar src={JobData.companyLogo} />
-      <Box>
-        <Typography>{JobData.name}</Typography>
-        <Typography>{JobData.company}</Typography>
-        <Typography>{JobData.location}</Typography>
+    <Container>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Avatar sx={{ width: 80, height: 80 }} src={JobData.companyLogo} />
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          <Typography>{JobData.name}</Typography>
+          <Chip label={JobData.company} />
+          <Chip label={JobData.location} />
+        </Box>
       </Box>
-      <Box>
-        <Typography>Description</Typography>
-        <Typography>{JobData.description}</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          margin: "10px 0",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Card
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            padding: 2,
+            margin: "10px 0",
+          }}
+        >
+          <Typography>Description</Typography>
+          <Divider />
+          <Typography>{JobData.description}</Typography>
+        </Card>
       </Box>
-      <Button>Submit</Button>
-    </Box>
+      <Button sx={{ width: "100%" }} variant={"contained"}>
+        Submit
+      </Button>
+    </Container>
   );
 };
 export default Job;

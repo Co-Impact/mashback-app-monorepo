@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Avatar, AvatarGroup, Box } from "@mui/material";
 
 interface MembersCardProps {
-  members: Array<{ image: string; name: string; position: string }>;
+  members: Array<{ id: string; image: string; name: string; position: string }>;
 }
 export const MembersCard: FC<MembersCardProps> = ({ members }) => {
   const firstThree = members.slice(0, 3);
