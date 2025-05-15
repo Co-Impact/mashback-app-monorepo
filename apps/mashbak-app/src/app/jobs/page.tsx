@@ -1,6 +1,7 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { JobCard } from "@/components/Card/JobCard";
 import { FC } from "react";
+import { SummaryCard } from "@/components/Card/SummaryCard";
 
 const JobsPage: FC = () => {
   const jobContent = [
@@ -31,16 +32,7 @@ const JobsPage: FC = () => {
   ];
   return (
     <Container className={"page"}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          height: "100px",
-        }}
-      >
-        <Typography>you submitted to 25 jobs</Typography>
-      </Box>
+      <SummaryCard title={"sdfasd"} chartData={45} subtitle={"sdfasdf"} />
       <Box>
         {jobContent.map(({ id, logo, positionName, companyName }, index) => (
           <JobCard

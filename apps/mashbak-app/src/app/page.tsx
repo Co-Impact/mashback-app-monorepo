@@ -98,21 +98,30 @@ import { membersItems } from "@/data/members";
 import { MembersCard } from "@/components/Card/MembersCard";
 import { pollItem } from "@/data/poll";
 import { PollItem } from "@/components/Poll/PollItem";
+import {
+  BallotIcon,
+  Diversity3Icon,
+  EventIcon,
+  QuestionAnswerIcon,
+  WorkIcon,
+} from "./icon.logic";
 
 export default function Home() {
   const cards = [
     {
-      label: "Discussion",
+      icon: QuestionAnswerIcon,
+      label: "نقاش",
       path: "discussion",
       content: (
         <div>
-          <h1>Discussion</h1>
+          <h1>نقاش</h1>
           <p>Discussion content goes here.</p>
         </div>
       ),
     },
     {
-      label: "Poll",
+      icon: BallotIcon,
+      label: "تصويت",
       path: "poll",
       content: pollItem
         .slice(0, 3)
@@ -126,7 +135,8 @@ export default function Home() {
         )),
     },
     {
-      label: "Jobs",
+      icon: WorkIcon,
+      label: "شغل",
       path: "jobs",
       content: jobsItem.map(({ logo, position, company }, index) => (
         <JobItem
@@ -139,7 +149,8 @@ export default function Home() {
       )),
     },
     {
-      label: "Events",
+      icon: EventIcon,
+      label: "احداث",
       path: "event",
       content: eventsItems.map(
         ({ name, image, location, registration, date }, index) => (
@@ -157,7 +168,8 @@ export default function Home() {
       ),
     },
     {
-      label: "My Group",
+      icon: Diversity3Icon,
+      label: "مجموعتي",
       path: "group",
       content: <MembersCard members={membersItems} />,
     },
@@ -165,8 +177,8 @@ export default function Home() {
   return (
     <>
       <main style={{ padding: "10px" }}>
-        {cards.map(({ label, path, content }, index) => (
-          <HomeCard key={index} path={path} label={label}>
+        {cards.map(({ label, path, content, icon }, index) => (
+          <HomeCard key={index} path={path} label={label} Icon={icon}>
             {content}
           </HomeCard>
         ))}

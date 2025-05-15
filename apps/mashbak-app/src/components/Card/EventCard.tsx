@@ -1,62 +1,73 @@
-import { FC } from "react";
-import { Avatar, Box, Card, Chip, Typography } from "@mui/material";
-import Link from "next/link";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { Box, Card, CardContent, Divider, Typography } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
-import PersonIcon from "@mui/icons-material/Person";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PlaceIcon from "@mui/icons-material/Place";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import { FC } from "react";
 
-interface Props {
-  id: string;
-  avatar: string;
-  name: string;
+type Props = {
+  title: string;
   date: string;
+  time: string;
   location: string;
-  count?: number;
-}
-export const EventCard: FC<Props> = ({
-  id,
+  ticketCode: string;
+};
+
+export const EventTicket: FC<Props> = ({
+  title,
   date,
-  name,
-  avatar,
+  time,
   location,
-  count,
+  ticketCode,
 }) => {
   return (
     <Card
+      variant="outlined"
       sx={{
-        display: "flex",
-        flexDirection: "row",
-        gap: 1,
-        padding: 1,
-        margin: "5px 0",
+        maxWidth: 500,
+        mx: "auto",
+        borderRadius: 4,
+        borderColor: "#ccc",
+        margin: "10px 0",
+        boxShadow: 3,
+        backgroundImage: "linear-gradient(to right, #f7f7f7, #ffffff)",
+        overflow: "hidden",
       }}
-      component={Link}
-      href={`/event/${id}`}
     >
-      <Avatar src={avatar} sx={{ width: 50, height: 50 }} />
-      <Box>
-        <Typography>{name}</Typography>
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <Chip
-            size={"small"}
-            icon={<EventIcon />}
-            label={date}
-            color={"info"}
-          />
-          <Chip
-            size={"small"}
-            icon={<LocationOnIcon />}
-            label={location}
-            color={"info"}
-          />
-          <Chip
-            size={"small"}
-            icon={<PersonIcon />}
-            label={count}
-            color={"info"}
-          />
+      <CardContent>
+        <Typography variant="h5" fontWeight={700} gutterBottom>
+          {title}
+        </Typography>
+
+        <Box display="flex" alignItems="center" mb={1}>
+          <EventIcon sx={{ mr: 1 }} />
+          <Typography variant="body1">{date}</Typography>
         </Box>
-      </Box>
+
+        <Box display="flex" alignItems="center" mb={1}>
+          <AccessTimeIcon sx={{ mr: 1 }} />
+          <Typography variant="body1">{time}</Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center" mb={1}>
+          <PlaceIcon sx={{ mr: 1 }} />
+          <Typography variant="body1">{location}</Typography>
+        </Box>
+
+        <Divider sx={{ my: 2 }} />
+
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Box display="flex" alignItems="center">
+            <ConfirmationNumberIcon sx={{ mr: 1 }} />
+            <Typography variant="body2" fontWeight={500}>
+              Ticket Code
+            </Typography>
+          </Box>
+          <Typography variant="body2" fontWeight={700}>
+            {ticketCode}
+          </Typography>
+        </Box>
+      </CardContent>
     </Card>
   );
 };

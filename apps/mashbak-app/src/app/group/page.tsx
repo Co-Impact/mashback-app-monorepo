@@ -1,12 +1,15 @@
 import { FC } from "react";
-import { Avatar, Box, Card, Container, Typography } from "@mui/material";
+import { Avatar, Box, Card, Chip, Container, Typography } from "@mui/material";
 import { group } from "@/data/group";
 import Divider from "@mui/material/Divider";
+import { GlobalCardChart } from "@/components/chart/GlobalChart";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
 
 const Group: FC = () => {
   return (
     <Container>
-      <Box></Box>
+      <GlobalCardChart title={"Group"} icon={<Diversity3Icon />} value={345} />
       {group.map(({ name, members }, index) => (
         <Card
           sx={{
@@ -18,7 +21,20 @@ const Group: FC = () => {
           }}
           key={index}
         >
-          <Typography variant={"body2"}>{name}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography variant={"body2"}>{name}</Typography>
+            <Chip
+              size={"small"}
+              icon={<AccountCircleIcon />}
+              label={members.length}
+            />
+          </Box>
           <Divider />
           <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             {members.map(({ imageUrl }, index) => (

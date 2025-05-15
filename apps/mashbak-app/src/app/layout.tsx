@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { Navbar } from "@/components/NavBar/Navbar";
 import { Container } from "@mui/material";
 import { ReactNode } from "react";
-import LabelBottomNavigation from "@/components/ButtomNavigation/ButtonNavigation";
+import { Cairo } from "next/font/google";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const cairo = Cairo({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-cairo",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -28,18 +23,18 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="ar" className={cairo.className} style={{ height: "100%" }}>
+      <body>
         <Navbar />
         <Container
           sx={{
             padding: "10px",
-            margin: "45px 0",
+            margin: "60px 0",
           }}
         >
           {children}
         </Container>
-        <LabelBottomNavigation />
+        {/*<LabelBottomNavigation />*/}
       </body>
     </html>
   );

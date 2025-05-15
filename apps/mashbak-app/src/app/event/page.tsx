@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { eventsItems } from "@/data/events";
-import { EventCard } from "@/components/Card/EventCard";
+import { EventTicket } from "@/components/Card/EventCard";
 
 const Event: FC = () => {
   return (
@@ -10,19 +10,16 @@ const Event: FC = () => {
         <Typography variant={"h3"}>Events</Typography>
       </Box>
       <Box>
-        {eventsItems.map(
-          ({ id, name, image, date, location, subscription }, index) => (
-            <EventCard
-              location={location}
-              key={index}
-              id={id}
-              avatar={image}
-              name={name}
-              date={date}
-              count={subscription}
-            />
-          ),
-        )}
+        {eventsItems.map(({ name, date, location }, index) => (
+          <EventTicket
+            key={index}
+            title={name}
+            date={date}
+            time="5:00 PM - 8:00 PM"
+            location={location}
+            ticketCode="MASH-2025-JD"
+          />
+        ))}
       </Box>
     </Container>
   );

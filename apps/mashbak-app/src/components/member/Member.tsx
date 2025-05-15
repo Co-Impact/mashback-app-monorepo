@@ -47,7 +47,6 @@ export const MemberItem: FC<MemberProps> = ({
           </Typography>
         </Box>
         <Box>
-          {/*<Typography sx={{ fontSize: "40px" }}>7</Typography>*/}
           <ArrowForwardIosIcon />
         </Box>
       </Box>
