@@ -1,0 +1,1 @@
+export const settings  = [{label:'Profile', path:'/profile'}, {label:'Account', path:''}, {label:'Dashboard', path:""}, {label:'Logout', path:'/logout'}];

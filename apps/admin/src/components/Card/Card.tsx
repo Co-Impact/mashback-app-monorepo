@@ -9,7 +9,10 @@ export const CardElement: FC<CardItem> = ({ label, value, path }) => {
     navigate(path);
   };
   return (
-    <Card sx={{ minWidth: 275 }} onClick={() => handleClick(path ?? "")}>
+    <Card
+      sx={{ width: "100%", height: "100%" }}
+      onClick={() => handleClick(path ?? "")}
+    >
       <CardContent>
         <Typography variant="h5" component="div">
           {label}

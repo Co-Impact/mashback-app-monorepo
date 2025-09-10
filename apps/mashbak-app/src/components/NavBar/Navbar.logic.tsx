@@ -27,12 +27,12 @@ export const navbarPages: Array<INavBarPage> = [
   //   icon: <HomeIcon />,
   // },
   {
-    label: "نقاش",
+    label: "الديوان",
     path: "/discussion",
     icon: <QuestionAnswerIcon />,
   },
   {
-    label: "احداث",
+    label: "فعالياتنا الجاي",
     path: "/event",
     icon: <EventIcon />,
   },
@@ -42,17 +42,17 @@ export const navbarPages: Array<INavBarPage> = [
     icon: <BallotIcon />,
   },
   {
-    label: "اعضاء مشبك",
+    label: "أعضاء شبكتنا",
     path: "/members",
     icon: <Diversity3Icon />,
   },
   {
-    label: "مجموعات",
+    label: "مجموعتي",
     path: "/group",
     icon: <Diversity1Icon />,
   },
   {
-    label: "شغل",
+    label: "فرص العمل",
     path: "/jobs",
     icon: <WorkIcon />,
   },

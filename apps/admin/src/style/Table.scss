@@ -1,0 +1,32 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+thead {
+  th {
+    background-color: #f2f2f2; /* Light gray background */
+    padding: 10px;
+    text-align: left; /* Left-align content by default */
+    border: 1px solid #ddd; /* Light border */
+    font-weight: bold;
+  }
+}
+
+tbody {
+  td {
+    padding: 10px;
+    border: 1px solid #ddd; /* Light border */
+  }
+}
+
+/* Styles for table footer (if enabled) */
+//<tfoot> {
+//   th {
+//     background-color: #e0e0e0; /* Slightly darker than header */
+//     padding: 10px;
+//     text-align: left; /* Left-align content by default */
+//     border: 1px solid #ddd; /* Light border */
+//   }
+// }

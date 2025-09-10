@@ -1,0 +1,38 @@
+.navbar-toolbar {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-menu-button {
+    margin-right: 16px;
+  }
+  
+  .navbar-logo {
+    height: 40px;
+    margin-right: 16px;
+  }
+  
+  .navbar-title {
+    flex-grow: 1;
+  }
+  
+  .navbar-rank {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+  }
+  
+  .navbar-rank-text {
+    margin-right: 8px;
+  }
+  
+  .navbar-user-box {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  .navbar-avatar-button {
+    padding: 0;
+  }
+  

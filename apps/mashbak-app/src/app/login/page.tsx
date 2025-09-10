@@ -1,11 +1,21 @@
 "use client";
-import { Box, TextField } from "@mui/material";
-import Image from "next/image";
+import { Avatar, Box, Button, Divider, TextField } from "@mui/material";
 
 const LoginPage = () => {
   return (
-    <Box>
-      <Image src={""} alt={"LogoImage"} loading={"lazy"} />
+    <Box
+      sx={{
+        mt: 2,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Avatar
+        src={""}
+        alt={"LogoImage"}
+        sx={{ width: "100px", height: "100px" }}
+      />
       <form>
         <TextField
           fullWidth
@@ -27,13 +37,33 @@ const LoginPage = () => {
           }}
           required
         />
+        <Button>تسجيل الدخول</Button>
         <Box>
           forget password <a>click here</a>
           need an account <a>Create Account</a>
         </Box>
       </form>
-      -----------------
-      {/*    TODO: login with google or linkedin */}
+      <Divider sx={{ margin: "4px 0" }} />
+      <Box>
+        <Button
+          variant="outlined"
+          sx={{ margin: "5px" }}
+          onClick={() => {
+            console.log("Login with Google");
+          }}
+        >
+          Login with Google
+        </Button>
+        <Button
+          variant="outlined"
+          sx={{ margin: "5px" }}
+          onClick={() => {
+            console.log("Login with Facebook");
+          }}
+        >
+          Login with Facebook
+        </Button>
+      </Box>
     </Box>
   );
 };

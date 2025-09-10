@@ -110,11 +110,11 @@ export default function Home() {
   const cards = [
     {
       icon: QuestionAnswerIcon,
-      label: "نقاش",
+      label: "الديوان",
       path: "discussion",
       content: (
         <div>
-          <h1>نقاش</h1>
+          <h1>الديوان</h1>
           <p>Discussion content goes here.</p>
         </div>
       ),
@@ -136,7 +136,7 @@ export default function Home() {
     },
     {
       icon: WorkIcon,
-      label: "شغل",
+      label: "فرص العمل",
       path: "jobs",
       content: jobsItem.map(({ logo, position, company }, index) => (
         <JobItem
@@ -150,7 +150,7 @@ export default function Home() {
     },
     {
       icon: EventIcon,
-      label: "احداث",
+      label: "فعالياتنا الجاي",
       path: "event",
       content: eventsItems.map(
         ({ name, image, location, registration, date }, index) => (
