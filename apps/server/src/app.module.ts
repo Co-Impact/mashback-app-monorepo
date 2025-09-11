@@ -7,9 +7,10 @@ import { JobsModule } from './jobs/jobs.module';
 import { PollsModule } from './polls/polls.module';
 import { EventsModule } from './events/events.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule, GroupsModule, JobsModule, PollsModule, EventsModule, NotificationsModule],
+  imports: [UsersModule, GroupsModule, JobsModule, PollsModule, EventsModule, NotificationsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

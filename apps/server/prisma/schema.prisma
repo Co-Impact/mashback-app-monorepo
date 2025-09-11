@@ -30,8 +30,12 @@ model User {
   profile          Profile?
   groupMessages    GroupMessage[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  discussion          Discussion[]
+  Comment             DiscussionComment[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  sentInvitations     UsersInvitations[]  @relation("UserSentInvitations")
+  receivedInvitations UsersInvitations[]  @relation("UserReceivedInvitations")
 }
 
 model Group {
@@ -95,7 +99,7 @@ model Vote {
   votedAt        DateTime @default(now())
 }
 
-model Event {
+model Events {
   id               String            @id @default(uuid())
   title            String
   description      String
@@ -109,7 +113,7 @@ model EventSubmission {
   userId      String
   eventId     String
   user        User     @relation(fields: [userId], references: [id])
-  event       Event    @relation(fields: [eventId], references: [id])
+  event       Events   @relation(fields: [eventId], references: [id])
   submittedAt DateTime @default(now())
 
   @@unique([userId, eventId])
@@ -143,4 +147,71 @@ model GroupMessage {
   sentAt  DateTime @default(now())
   group   Group    @relation(fields: [groupId], references: [id])
   user    User     @relation(fields: [userId], references: [id])
+}
+
+model company {
+  id        String     @id @default(uuid())
+  name      String
+  location  String
+  website   String?
+  createdAt DateTime   @default(now())
+  Position  Position[]
+}
+
+model Position {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  companyId   String
+  company     company  @relation(fields: [companyId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model University {
+  id                String       @id @default(uuid())
+  name              String
+  location          String
+  website           String?
+  createdAt         DateTime     @default(now())
+  UniversityProgram StudyField[]
+}
+
+model StudyField {
+  id           String     @id @default(uuid())
+  name         String
+  description  String
+  universityId String
+  university   University @relation(fields: [universityId], references: [id])
+  createdAt    DateTime   @default(now())
+}
+
+model Discussion {
+  id        String              @id @default(uuid())
+  title     String
+  content   String
+  creatorId String
+  creator   User                @relation(fields: [creatorId], references: [id])
+  createdAt DateTime            @default(now())
+  comments  DiscussionComment[]
+}
+
+model DiscussionComment {
+  id           String     @id @default(uuid())
+  content      String
+  discussionId String
+  creatorId    String
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
+  creator      User       @relation(fields: [creatorId], references: [id])
+  createdAt    DateTime   @default(now())
+}
+
+model UsersInvitations {
+  id             String   @id @default(uuid())
+  userSenderId   String
+  userReceiverId String
+  userSender     User     @relation("UserSentInvitations", fields: [userSenderId], references: [id])
+  userReceiver   User     @relation("UserReceivedInvitations", fields: [userReceiverId], references: [id])
+  status         String   @default("pending") // pending, accepted, rejected
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
