@@ -14,7 +14,7 @@ const LoginPage = () => {
       <Avatar
         src={""}
         alt={"LogoImage"}
-        sx={{ width: "100px", height: "100px" }}
+        sx={{ width: "150px", height: "150px" }}
       />
       <form>
         <TextField

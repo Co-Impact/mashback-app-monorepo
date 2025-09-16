@@ -1,0 +1,217 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id @default(uuid())
+  email            String            @unique
+  password         String
+  firstName        String
+  lastName         String
+  workplace        String
+  groupId          String
+  group            Group             @relation(fields: [groupId], references: [id])
+  jobApplications  JobApplication?
+  answers          Answer?
+  votes            Vote?
+  eventSubmissions EventSubmission[]
+  notifications    Notification[]
+  profile          Profile?
+  groupMessages    GroupMessage[]
+
+  discussion          Discussion[]
+  Comment             DiscussionComment[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  sentInvitations     UsersInvitations[]  @relation("UserSentInvitations")
+  receivedInvitations UsersInvitations[]  @relation("UserReceivedInvitations")
+}
+
+model Group {
+  id            String         @id @default(uuid())
+  name          String         @unique
+  users         User[]
+  groupMessages GroupMessage[]
+  createdAt     DateTime       @default(now())
+}
+
+model Job {
+  id              String           @id @default(uuid())
+  title           String
+  description     String
+  jobApplications JobApplication[]
+  createdAt       DateTime         @default(now())
+}
+
+model JobApplication {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  jobId     String
+  user      User     @relation(fields: [userId], references: [id])
+  job       Job      @relation(fields: [jobId], references: [id])
+  appliedAt DateTime @default(now())
+}
+
+model Question {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  answers     Answer[]
+  createdAt   DateTime @default(now())
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  questionId String
+  user       User     @relation(fields: [userId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id])
+  answerText String
+  answeredAt DateTime @default(now())
+}
+
+model Poll {
+  id        String   @id @default(uuid())
+  title     String
+  options   String[] // Array of options
+  votes     Vote[]
+  createdAt DateTime @default(now())
+}
+
+model Vote {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  pollId         String
+  user           User     @relation(fields: [userId], references: [id])
+  poll           Poll     @relation(fields: [pollId], references: [id])
+  selectedOption String
+  votedAt        DateTime @default(now())
+}
+
+model Events {
+  id               String            @id @default(uuid())
+  title            String
+  description      String
+  eventDate        DateTime
+  eventSubmissions EventSubmission[]
+  createdAt        DateTime          @default(now())
+}
+
+model EventSubmission {
+  id          String   @id @default(uuid())
+  userId      String
+  eventId     String
+  user        User     @relation(fields: [userId], references: [id])
+  event       Events   @relation(fields: [eventId], references: [id])
+  submittedAt DateTime @default(now())
+
+  @@unique([userId, eventId])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  content   String
+  isRead    Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  avatarUrl   String?
+  bio         String?
+  socialLinks Json?
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model GroupMessage {
+  id      String   @id @default(uuid())
+  groupId String
+  userId  String
+  message String
+  sentAt  DateTime @default(now())
+  group   Group    @relation(fields: [groupId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
+}
+
+model company {
+  id        String     @id @default(uuid())
+  name      String
+  location  String
+  website   String?
+  createdAt DateTime   @default(now())
+  Position  Position[]
+}
+
+model Position {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  companyId   String
+  company     company  @relation(fields: [companyId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model University {
+  id                String       @id @default(uuid())
+  name              String
+  location          String
+  website           String?
+  createdAt         DateTime     @default(now())
+  UniversityProgram StudyField[]
+}
+
+model StudyField {
+  id           String     @id @default(uuid())
+  name         String
+  description  String
+  universityId String
+  university   University @relation(fields: [universityId], references: [id])
+  createdAt    DateTime   @default(now())
+}
+
+model Discussion {
+  id        String              @id @default(uuid())
+  title     String
+  content   String
+  creatorId String
+  creator   User                @relation(fields: [creatorId], references: [id])
+  createdAt DateTime            @default(now())
+  comments  DiscussionComment[]
+}
+
+model DiscussionComment {
+  id           String     @id @default(uuid())
+  content      String
+  discussionId String
+  creatorId    String
+  discussion   Discussion @relation(fields: [discussionId], references: [id])
+  creator      User       @relation(fields: [creatorId], references: [id])
+  createdAt    DateTime   @default(now())
+}
+
+model UsersInvitations {
+  id             String   @id @default(uuid())
+  userSenderId   String
+  userReceiverId String
+  userSender     User     @relation("UserSentInvitations", fields: [userSenderId], references: [id])
+  userReceiver   User     @relation("UserReceivedInvitations", fields: [userReceiverId], references: [id])
+  status         String   @default("pending") // pending, accepted, rejected
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
