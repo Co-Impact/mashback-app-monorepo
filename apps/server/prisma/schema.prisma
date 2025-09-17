@@ -14,28 +14,145 @@ datasource db {
 }
 
 model User {
-  id               String            @id @default(uuid())
-  email            String            @unique
-  password         String
-  firstName        String
-  lastName         String
-  workplace        String
-  groupId          String
-  group            Group             @relation(fields: [groupId], references: [id])
-  jobApplications  JobApplication?
-  answers          Answer?
-  votes            Vote?
-  eventSubmissions EventSubmission[]
-  notifications    Notification[]
-  profile          Profile?
-  groupMessages    GroupMessage[]
-
+  id                  String              @id @default(uuid())
+  email               String              @unique
+  password            String
+  firstName           String
+  lastName            String
+  phoneNumber         String?
+  dateOfBirth         DateTime?
+  groupId             String
+  group               Group               @relation(fields: [groupId], references: [id])
+  jobApplications     JobApplication?
+  answers             Answer?
+  votes               Vote?
+  isActive            Boolean             @default(false)
+  twoFAEnabled        Boolean             @default(false)
+  eventSubmissions    EventSubmission[]
+  notifications       Notification[]
+  profile             Profile?
+  authProviders       AuthProvider[]
+  groupMessages       GroupMessage[]
   discussion          Discussion[]
   Comment             DiscussionComment[]
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
+  deletedAt           DateTime?
   sentInvitations     UsersInvitations[]  @relation("UserSentInvitations")
   receivedInvitations UsersInvitations[]  @relation("UserReceivedInvitations")
+  LoginHistory        LoginHistory[]
+  PasswordReset       PasswordReset[]
+  TwoFactorAuth       TwoFactorAuth[]
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum TwoFactorMethod {
+  TOTP
+  SMS
+  EMAIL
+  BACKUP_CODES
+}
+
+model LoginHistory {
+  id          String           @id @default(uuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id])
+  loginAt     DateTime         @default(now())
+  methodUsed  TwoFactorMethod?
+  code        String?
+  ipAddress   String
+  userAgentId String?
+  userAgent   UserAgent?       @relation(fields: [userAgentId], references: [id])
+  location    String?
+  success     Boolean
+  createdAt   DateTime         @default(now())
+
+  @@index([userId])
+}
+
+model UserAgent {
+  id           String         @id @default(uuid())
+  browser      String?
+  os           String?
+  device       String?
+  createdAt    DateTime       @default(now())
+  LoginHistory LoginHistory[]
+}
+
+model Invitation {
+  id        String           @id @default(uuid())
+  email     String           @unique
+  status    InvitationStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  expiresAt DateTime
+}
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model TwoFactorAuth {
+  id            String          @id @default(uuid())
+  userId        String?
+  user          User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  method        TwoFactorType
+  value         String
+  isEnabled     Boolean         @default(false)
+  isPrimary     Boolean         @default(false)
+  isVerified    Boolean         @default(false)
+  SecretHistory SecretHistory[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@unique([method, value])
+}
+
+model SecretHistory {
+  id        String        @id @default(uuid())
+  twoFAId   String
+  towFA     TwoFactorAuth @relation(fields: [twoFAId], references: [id])
+  secret    String
+  success   Boolean?
+  expiresAt DateTime?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model AuthProvider {
+  id         String           @id @default(uuid())
+  provider   AuthProviderType
+  providerId String
+  userId     String
+  user       User             @relation(fields: [userId], references: [id])
+  createdAt  DateTime         @default(now())
+
+  @@unique([provider, providerId])
+}
+
+enum AuthProviderType {
+  GOOGLE
+  LINKEDIN
+  GITHUB
+  TWITTER
+  MICROSOFT
+  APPLE
+}
+
+enum TwoFactorType {
+  TOTP
+  SMS
+  EMAIL
+  BACKUP_CODES
 }
 
 model Group {
@@ -176,6 +293,14 @@ model University {
   UniversityProgram StudyField[]
 }
 
+model College {
+  id        String   @id @default(uuid())
+  name      String
+  location  String
+  website   String?
+  createdAt DateTime @default(now())
+}
+
 model StudyField {
   id           String     @id @default(uuid())
   name         String
@@ -211,7 +336,7 @@ model UsersInvitations {
   userReceiverId String
   userSender     User     @relation("UserSentInvitations", fields: [userSenderId], references: [id])
   userReceiver   User     @relation("UserReceivedInvitations", fields: [userReceiverId], references: [id])
-  status         String   @default("pending") // pending, accepted, rejected
+  status         String   @default("pending")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }

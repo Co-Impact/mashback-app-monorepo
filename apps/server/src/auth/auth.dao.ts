@@ -1,24 +1,15 @@
 import { authenticator } from 'otplib';
 import { PrismaClient } from '@prisma/client';
-import {
-  BadRequestException,
-  ConflictException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException, } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UAParser } from 'ua-parser-js';
-import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class AuthDao {
   constructor(
     private readonly prismaClient: PrismaClient,
     private readonly jwtService: JwtService,
-    private readonly httpService: HttpService,
   ) {}
 
   generateTotpToken(secret: string): string {
@@ -46,6 +37,7 @@ export class AuthDao {
           throw new UnauthorizedException('Invalid token structure');
         }
         const { iat, exp, ...rest } = payload as Record<string, any>;
+        console.log({ iat, exp });
         return this.generateToken(rest);
       }
       throw new HttpException('', HttpStatus.UNAUTHORIZED);
@@ -63,46 +55,10 @@ export class AuthDao {
         isActive: true,
         deletedAt: null,
       },
-      include: {
-        LoginHistory: {
-          where: {
-            createdAt: {
-              gte: new Date(Date.now() - 60 * 60 * 1000),
-            },
-          },
-          orderBy: { createdAt: 'desc' },
-        },
-        TwoFactorAuth: true,
-      },
     });
     if (!user.password) {
       throw new HttpException(
         'ErrorMessages.AUTH.INVALID_CREDENTIALS',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-
-    if (user.lockedUntil && user.lockedUntil > new Date()) {
-      throw new HttpException(
-        'ErrorMessages.AUTH.ACCOUNT_LOCKED',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-
-    const failedAttempts = user.LoginHistory.filter((h) => !h.success).length;
-
-    if (failedAttempts >= 4) {
-      const lockDurationMinutes = 15;
-
-      await this.prismaClient.user.update({
-        where: { id: user.id },
-        data: {
-          lockedUntil: new Date(Date.now() + lockDurationMinutes * 60 * 1000),
-        },
-      });
-
-      throw new HttpException(
-        'ErrorMessages.AUTH.ACCOUNT_LOCKED',
         HttpStatus.UNAUTHORIZED,
       );
     }
@@ -126,29 +82,7 @@ export class AuthDao {
   }
 
   async createUser(data: any) {
-    return this.prismaClient.$transaction(async (tx) => {
-      const user = await tx.user
-        .create({
-          data: {
-            email: data.email,
-            username: data.username,
-            password: data.password,
-            phone: data?.phone,
-            isBusiness: data?.isBusiness,
-            isActive: !data?.isBusiness,
-          },
-        })
-        .catch((e) => {
-          throw new ConflictException('User already exists', e);
-        });
-      const assignedTFA = await tx.twoFactorAuth.update({
-        where: { method_value: { method: 'EMAIL', value: user.email } },
-        data: {
-          userId: user.id,
-        },
-      });
-      return user;
-    });
+    return this.prismaClient.user.create({ data });
   }
 
   async createUserInvitation(data: { email: string }) {
@@ -196,7 +130,7 @@ export class AuthDao {
     });
   }
 
-  getUserAgent(headers) {
+  getUserAgent(headers: any) {
     const details = new UAParser(headers['user-agent']);
     return {
       browser: details.getBrowser(),
@@ -212,7 +146,7 @@ export class AuthDao {
 
   validInvitation(email: string) {
     return this.prismaClient.$transaction(async (tx) => {
-      const existUser = tx.user.findFirstOrThrow({
+      tx.user.findFirstOrThrow({
         where: {
           email,
         },
