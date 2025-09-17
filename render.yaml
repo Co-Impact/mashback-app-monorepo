@@ -7,8 +7,7 @@ services:
     buildCommand: npm install && npm run build
     startCommand: npm run start:dev
     envVars:
-      groups:
-          - Mashback-App
+        - fromGroup: Mashback-App
 
   - type: web
     name: admin
