@@ -11,11 +11,9 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { PublicClientApplication } from "@azure/msal-browser";
-import { MicrosoftLogInConfig } from "../../api/log-in/login.ts";
 
 const theme = createTheme();
-const msalInstance = new PublicClientApplication(MicrosoftLogInConfig);
+
 export const LoginPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,19 +22,6 @@ export const LoginPage: FC = () => {
     event.preventDefault();
     console.log("Email:", email);
     console.log("Password:", password);
-  };
-
-  const handleLogin = async () => {
-    try {
-      const loginRequest = {
-        scopes: ["user.read"],
-      };
-      await msalInstance.initialize();
-      const loginResponse = await msalInstance.loginPopup(loginRequest);
-      console.log(loginResponse);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
@@ -100,15 +85,6 @@ export const LoginPage: FC = () => {
               sx={{ mb: 2 }}
             >
               Sign In
-            </Button>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mb: 2 }}
-              onClick={handleLogin}
-            >
-              Sign In with Microsoft 365
             </Button>
           </Box>
         </Box>

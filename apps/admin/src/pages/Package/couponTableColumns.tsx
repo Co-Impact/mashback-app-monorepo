@@ -1,14 +1,14 @@
 import { Typography } from "@mui/material";
-import { ICoupon } from "../../api/types";
 import { ITableColumn } from "../../components/Table/types";
 import { blue } from "@mui/material/colors";
 
-
-export const getCouponColumns = (onEdit: (data: any) => void): ITableColumn[] => [
+export const getCouponColumns = (
+  onEdit: (data: any) => void,
+): ITableColumn[] => [
   {
-    id: 'name',
-    accessorKey: 'name',
-    header: () => 'Coupon Name',
+    id: "name",
+    accessorKey: "name",
+    header: () => "Coupon Name",
     cell: (item) => {
       const row = item.row.original;
 
@@ -20,30 +20,31 @@ export const getCouponColumns = (onEdit: (data: any) => void): ITableColumn[] =>
           {row.name}
         </Typography>
       );
-    }
+    },
   },
   {
-    id: 'status',
-    accessorKey: 'isActive',
-    header: () => 'Status',
-    cell: (item) => item.row.original.isActive ? 'Active' : 'Inactive',
+    id: "status",
+    accessorKey: "isActive",
+    header: () => "Status",
+    cell: (item) => (item.row.original.isActive ? "Active" : "Inactive"),
   },
   {
-    id: 'discount',
-    accessorKey: 'discount',
-    header: () => 'Amount',
+    id: "discount",
+    accessorKey: "discount",
+    header: () => "Amount",
     cell: (item) => {
       const discountValue = item.row.original.discount;
       const discountType = item.row.original.type;
 
-      return discountType === 'PERCENTAGE' ? `${discountValue}%` : `₹${discountValue}`;
+      return discountType === "PERCENTAGE"
+        ? `${discountValue}%`
+        : `₹${discountValue}`;
     },
   },
   {
-    id: 'usedBy',
-    accessorKey: 'usedBy',
-    header: () => 'Used By',
-    cell: () => `${342}`
+    id: "usedBy",
+    accessorKey: "usedBy",
+    header: () => "Used By",
+    cell: () => `${342}`,
   },
 ];
-

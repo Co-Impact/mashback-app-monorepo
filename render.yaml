@@ -7,21 +7,8 @@ services:
     buildCommand: npm install && npm run build
     startCommand: npm run start:dev
     envVars:
-      - key: PORT
-        value: 3001
-      - key: DATABASE_URL
-        sync: false
-
-  - type: web
-    name: frontend
-    env: node
-    plan: free
-    rootDir: apps/mashbak-app
-    buildCommand: npm install && npm run build
-    startCommand: npm run dev
-    envVars:
-      - key: NEXT_PORT
-        value: https://monorepo-backend.onrender.com
+      groups:
+          - Mashback-App
 
   - type: web
     name: admin

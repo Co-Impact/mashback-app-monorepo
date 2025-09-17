@@ -8,7 +8,7 @@ export const PricingPage: FC = () => {
   const pricingCards: Array<CardItem> = [
     { label: "Total Business", value: "" },
     { label: "Total Private Business", value: "", path: "/user" },
-    { label: "Total Business Business", value: "", path: "/business" },
+    { label: "Total Business", value: "", path: "/business" },
   ];
 
   const onOpen = () => {
