@@ -1,34 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  validateToken(@Body() data: { token: string; role: string }) {
+    // TODO: Implement token validation logic for admin and user roles
+    if (data.role === 'Admin') {
+      return { valid: true, userId: 'adminUserId', role: 'Admin' };
+    }
+    return this.authService.validateToken(data.token);
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @Post('signup')
+  createUser(@Body() data: any) {
+    return this.authService.signup(data);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+  @Post('login')
+  login(@Body() data: any) {
+    return this.authService.login(data);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @Get('logout')
+  logout() {
+    return { message: 'User logged out successfully' };
   }
 }
