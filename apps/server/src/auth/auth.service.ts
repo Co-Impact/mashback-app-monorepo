@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AuthDao } from './auth.dao';
+import { LoginType } from './type/login.type';
 
 @Injectable()
 export class AuthService {
@@ -9,15 +10,15 @@ export class AuthService {
     return await this.authDao.validateToken(token);
   }
 
-  async login(body: any) {
-    const { userData, header, ip } = body;
+  async login(body: LoginType) {
+    const { userData, headers, ip } = body;
     const { user, isError } = await this.authDao.validateUser({
       email: userData.email,
       password: userData.password,
     });
 
     if (isError) {
-      await this.authDao.createLoginRecord(user.id, header, ip, false);
+      await this.authDao.createLoginRecord(user.id, headers, ip, false);
     }
     if (user.twoFAEnabled) {
       this.send2FactCode(user.id);
@@ -26,7 +27,7 @@ export class AuthService {
     const token = this.authDao.generateToken({
       username: user.username || user.email,
     });
-    await this.authDao.createLoginRecord(user.id, header, ip);
+    await this.authDao.createLoginRecord(user.id, headers, ip);
     return { token, user };
   }
 
