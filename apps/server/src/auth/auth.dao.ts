@@ -1,6 +1,12 @@
 import { authenticator } from 'otplib';
 import { PrismaClient } from '@prisma/client';
-import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException, } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UAParser } from 'ua-parser-js';
@@ -47,16 +53,17 @@ export class AuthDao {
   async validateUser(data: {
     email: string;
     password: string;
-  }): Promise<{ user; isError: boolean }> {
+  }): Promise<{ user: any; isError: boolean }> {
     const { email, password } = data;
-    const user = await this.prismaClient.user.findFirstOrThrow({
+    const user = await this.prismaClient.user.findFirst({
       where: {
         email,
         isActive: true,
         deletedAt: null,
       },
     });
-    if (!user.password) {
+    console.log(user);
+    if (!user) {
       throw new HttpException(
         'ErrorMessages.AUTH.INVALID_CREDENTIALS',
         HttpStatus.UNAUTHORIZED,

@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { GroupDao } from './group.dao';
 
 @Injectable()
 export class GroupsService {
+  constructor(private readonly groupDao: GroupDao) {}
   create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
+    return this.groupDao.createGroup(createGroupDto);
   }
 
   findAll() {
-    return `This action returns all groups`;
+    return this.groupDao.getAllGroups();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
+  findOne(id: string) {
+    return this.groupDao.getGroupByID(id);
   }
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
+  update(id: string, updateGroupDto: UpdateGroupDto) {
+    return this.groupDao.updateGroup(id, updateGroupDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  remove(id: string) {
+    return this.groupDao.deleteGroup(id);
   }
 }

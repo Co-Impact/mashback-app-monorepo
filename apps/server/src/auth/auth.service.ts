@@ -31,8 +31,8 @@ export class AuthService {
     return { token, user };
   }
 
-  async signup(data: any) {
-    const { user, header, ip } = data;
+  async signup(data: any, ip: string, header: any) {
+    const { user } = data;
     user.password = await this.authDao.hashPassword(user.password);
     const userRecord = await this.authDao.createUser(user);
     await this.authDao.createLoginRecord(userRecord.id, header, ip);
