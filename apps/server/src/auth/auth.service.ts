@@ -33,6 +33,7 @@ export class AuthService {
 
   async signup(data: any, ip: string, header: any) {
     const { user } = data;
+    console.log(data);
     user.password = await this.authDao.hashPassword(user.password);
     const userRecord = await this.authDao.createUser(user);
     await this.authDao.createLoginRecord(userRecord.id, header, ip);
