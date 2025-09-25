@@ -39,4 +39,9 @@ export class JobsController {
   remove(@Param('id') id: string) {
     return this.jobsService.deleteJob(id);
   }
+
+  @Post(':id/submit')
+  submitJob(@Param('id') id: string, @Body() body) {
+    return this.jobsService.submitJob(id, body);
+  }
 }

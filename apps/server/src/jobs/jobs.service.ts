@@ -23,4 +23,8 @@ export class JobsService {
   deleteJob(id: string) {
     return this.jobDao.deleteJob(id);
   }
+
+  submitJob(jobId: string, data) {
+    return this.jobDao.submitJob(jobId, data);
+  }
 }

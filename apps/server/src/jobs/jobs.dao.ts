@@ -21,6 +21,10 @@ export class JobDao {
     return this.prismaClient.job.update({ where: { id }, data });
   }
 
+  submitJob(id: string, data) {
+    return { id, data };
+  }
+
   deleteJob(id: string) {
     return this.prismaClient.job.delete({ where: { id } });
   }
