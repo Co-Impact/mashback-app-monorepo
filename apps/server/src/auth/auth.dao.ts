@@ -10,6 +10,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UAParser } from 'ua-parser-js';
+import { IUser } from './type/signup.type';
 
 @Injectable()
 export class AuthDao {
@@ -88,7 +89,7 @@ export class AuthDao {
     return this.jwtService.sign(payload);
   }
 
-  async createUser(data: any) {
+  async createUser(data: IUser) {
     return this.prismaClient.user.create({ data });
   }
 

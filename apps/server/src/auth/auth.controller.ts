@@ -20,7 +20,7 @@ export class AuthController {
   createUser(
     @Body() data: SignupDto,
     @Ip() ip: string,
-    @Headers('user-agent') userAgent: string,
+    @Headers('user-agent') userAgent: any,
   ) {
     return this.authService.signup(data, ip, userAgent);
   }

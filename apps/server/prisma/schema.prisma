@@ -21,8 +21,12 @@ model User {
   lastName            String
   phoneNumber         String?
   dateOfBirth         DateTime?
+  universityId        String?
+  // university          University?         @relation(fields: [universityId], references: [id])
+  university          String
+  studyField          String?
   groupId             String
-  group               Group               @relation(fields: [groupId], references: [id])
+  group               Group?              @relation(fields: [groupId], references: [id])
   jobApplications     JobApplication?
   answers             Answer?
   votes               Vote?
@@ -43,6 +47,7 @@ model User {
   LoginHistory        LoginHistory[]
   PasswordReset       PasswordReset[]
   TwoFactorAuth       TwoFactorAuth[]
+  University          University?         @relation(fields: [universityId], references: [id])
 }
 
 enum InvitationStatus {
@@ -285,12 +290,15 @@ model Position {
 }
 
 model University {
-  id                String       @id @default(uuid())
-  name              String
-  location          String
-  website           String?
-  createdAt         DateTime     @default(now())
-  UniversityProgram StudyField[]
+  id           String       @id @default(uuid())
+  hebrowName   String
+  arabicName   String
+  location     String
+  website      String?
+  isUniversity Boolean      @default(true)
+  studyField   StudyField[]
+  User         User[]
+  createdAt    DateTime     @default(now())
 }
 
 model College {

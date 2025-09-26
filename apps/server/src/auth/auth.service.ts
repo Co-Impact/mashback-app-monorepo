@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AuthDao } from './auth.dao';
 import { LoginType } from './type/login.type';
+import { IUser } from './type/signup.type';
 
 @Injectable()
 export class AuthService {
@@ -31,11 +32,11 @@ export class AuthService {
     return { token, user };
   }
 
-  async signup(data: any, ip: string, header: any) {
-    const { user } = data;
-    console.log(data);
-    user.password = await this.authDao.hashPassword(user.password);
-    const userRecord = await this.authDao.createUser(user);
+  async signup(data: IUser, ip: string, header: any) {
+    const { password } = data;
+    console.log({ data, ip, header });
+    data.password = await this.authDao.hashPassword(password);
+    const userRecord = await this.authDao.createUser(data);
     await this.authDao.createLoginRecord(userRecord.id, header, ip);
     const token = this.authDao.generateToken({ userId: userRecord.email });
     return { userRecord, token };
