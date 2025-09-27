@@ -15,12 +15,11 @@ export const useCreateNewLab = () => {
     onSuccess: async () => {
       toast.success("lab create successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error while create lab: ${error.message}`);
     },
   });
 };
-
 
 const updateLab = async (id: string, data: UpdateLabBody): Promise<ILab> => {
   return (await backendInstance.patch(`labs/${id}`, data)).data;
@@ -29,11 +28,12 @@ const updateLab = async (id: string, data: UpdateLabBody): Promise<ILab> => {
 export const useUpdateLab = () => {
   return useMutation({
     mutationKey: ["update-lab"],
-    mutationFn: ({id, data}: {id:string, data:UpdateLabBody}) => updateLab(id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateLabBody }) =>
+      updateLab(id, data),
     onSuccess: async () => {
       toast.success("lab updated successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error updating lab: ${error.message}`);
     },
   });

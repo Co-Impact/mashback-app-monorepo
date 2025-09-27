@@ -27,7 +27,10 @@ export const LabForm: FC<Props> = ({ onClose }) => {
   const { data } = useGetAllPackages();
   const queryClient = useQueryClient();
   const packageData = data
-    ? data.map((item) => ({ name: item.name, id: item.id }))
+    ? data.map((item: { name: any; id: any }) => ({
+        name: item.name,
+        id: item.id,
+      }))
     : [];
   const { mutateAsync, isPending } = useCreateNewLab();
   const steps: Array<string> = [

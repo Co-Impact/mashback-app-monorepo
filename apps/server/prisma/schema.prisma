@@ -22,10 +22,16 @@ model User {
   phoneNumber         String?
   dateOfBirth         DateTime?
   universityId        String?
+  company             String?
+  position            String?
+  // position            Position?           @relation(fields: [positionId], references: [id])
+  // positionId          String?
+  companyId           String?
+  // company             company?            @relation(fields: [companyId], references: [id])
   // university          University?         @relation(fields: [universityId], references: [id])
   university          String
   studyField          String?
-  groupId             String
+  groupId             String?
   group               Group?              @relation(fields: [groupId], references: [id])
   jobApplications     JobApplication?
   answers             Answer?
@@ -271,7 +277,7 @@ model GroupMessage {
   user    User     @relation(fields: [userId], references: [id])
 }
 
-model company {
+model Company {
   id        String     @id @default(uuid())
   name      String
   location  String
@@ -285,7 +291,7 @@ model Position {
   title       String
   description String
   companyId   String
-  company     company  @relation(fields: [companyId], references: [id])
+  company     Company  @relation(fields: [companyId], references: [id])
   createdAt   DateTime @default(now())
 }
 

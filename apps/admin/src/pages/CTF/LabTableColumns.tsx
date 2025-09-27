@@ -10,6 +10,7 @@ export const LabTableColumns: ITableColumn[] = [
     accessorKey: "name",
     header: () => "Lab Name",
     cell: (info) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       const navigate = useNavigate();
       const row = info.row.original;
       return (

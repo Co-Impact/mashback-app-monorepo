@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { CloudProvider, CreateLabs, Difficulty, ILab } from "../../../api/types.ts";
+import { CloudProvider, CreateLabs, Difficulty } from "../../../api/types.ts";
 import { useGetAllCTF } from "../../../api/ctfRequest/getCTF.ts";
 
 interface Props {
@@ -22,21 +22,23 @@ interface Props {
   watch: UseFormWatch<CreateLabs>;
 }
 
-export const LabConfigForm: FC<Props> = ({
-  control,
-  packageData,
-  watch,
-}) => {
+export const LabConfigForm: FC<Props> = ({ control, packageData, watch }) => {
   const cloudProvider = watch("cloudProvider");
 
   const ctf = useGetAllCTF();
   const isCtf = watch("isCtf");
 
   const ctfSelect: Record<string, string> =
-    ctf?.data?.reduce((acc: Record<string, string>, item) => {
-      acc[item.id] = item.name;
-      return acc;
-    }, {}) || {};
+    ctf?.data?.reduce(
+      (
+        acc: Record<string, string>,
+        item: { id: string | number; name: string },
+      ) => {
+        acc[item.id] = item.name;
+        return acc;
+      },
+      {},
+    ) || {};
 
   return (
     <Stack spacing={2} sx={{ mt: 4 }}>
@@ -92,15 +94,15 @@ export const LabConfigForm: FC<Props> = ({
         )}
       />
 
-
-
       {/* Package */}
       <Controller
         name="packages"
         control={control}
         rules={{
           validate: (value) =>
-            Array.isArray(value) && value.length > 0 ? true : "At least one package must be selected"
+            Array.isArray(value) && value.length > 0
+              ? true
+              : "At least one package must be selected",
         }}
         render={({ field, fieldState: { error } }) => (
           <FormControl fullWidth margin="normal" error={!!error}>
@@ -119,14 +121,17 @@ export const LabConfigForm: FC<Props> = ({
               ))}
             </Select>
             {error && (
-              <Typography variant="subtitle2" sx={{ ml: 2, fontSize: "12px" }} color="error">
+              <Typography
+                variant="subtitle2"
+                sx={{ ml: 2, fontSize: "12px" }}
+                color="error"
+              >
                 {error.message}
               </Typography>
             )}
           </FormControl>
         )}
       />
-
 
       {/* Difficulty */}
       <Controller
@@ -136,7 +141,11 @@ export const LabConfigForm: FC<Props> = ({
         render={({ field, fieldState: { error } }) => (
           <FormControl fullWidth margin="normal" error={!!error}>
             <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
-            <Select {...field} labelId="difficulty-select-label" label="Difficulty">
+            <Select
+              {...field}
+              labelId="difficulty-select-label"
+              label="Difficulty"
+            >
               {Object.entries(Difficulty).map(([key, value]) => (
                 <MenuItem key={key} value={key}>
                   {value}
@@ -144,7 +153,11 @@ export const LabConfigForm: FC<Props> = ({
               ))}
             </Select>
             {error && (
-              <Typography variant="subtitle2" sx={{ ml: 2, fontSize: "12px" }} color={"error"}>
+              <Typography
+                variant="subtitle2"
+                sx={{ ml: 2, fontSize: "12px" }}
+                color={"error"}
+              >
                 {error.message}
               </Typography>
             )}
@@ -153,31 +166,29 @@ export const LabConfigForm: FC<Props> = ({
       />
 
       {/* Region */}
-      {
-        !isCtf && (
-          <Controller
-            name="timeLimit"
-            control={control}
-            rules={{
-              required: "Time limit is required",
-              min: { value: 1, message: "Time limit must be greater than 0" },
-            }}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                type={"number"}
-                label="Time Limit"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                error={!!error}
-                helperText={error?.message}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-              />
-            )}
-          />
-        )
-      }
+      {!isCtf && (
+        <Controller
+          name="timeLimit"
+          control={control}
+          rules={{
+            required: "Time limit is required",
+            min: { value: 1, message: "Time limit must be greater than 0" },
+          }}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              type={"number"}
+              label="Time Limit"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              error={!!error}
+              helperText={error?.message}
+              onChange={(e) => field.onChange(Number(e.target.value))}
+            />
+          )}
+        />
+      )}
 
       {isCtf && (
         <Controller
@@ -186,8 +197,14 @@ export const LabConfigForm: FC<Props> = ({
           rules={{ required: "Capture the Flag is required" }}
           render={({ field, fieldState: { error } }) => (
             <FormControl fullWidth margin="normal" error={!!error}>
-              <InputLabel id="capture-the-flag-select-label">Capture The Flag</InputLabel>
-              <Select {...field} labelId="capture-the-flag-select-label" label="Capture The Flag">
+              <InputLabel id="capture-the-flag-select-label">
+                Capture The Flag
+              </InputLabel>
+              <Select
+                {...field}
+                labelId="capture-the-flag-select-label"
+                label="Capture The Flag"
+              >
                 {Object.entries(ctfSelect).map(([key, value]) => (
                   <MenuItem key={key} value={key}>
                     {value}
@@ -195,7 +212,11 @@ export const LabConfigForm: FC<Props> = ({
                 ))}
               </Select>
               {error && (
-                <Typography variant="subtitle2" sx={{ ml: 2, fontSize: "12px" }} color={"error"}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ ml: 2, fontSize: "12px" }}
+                  color={"error"}
+                >
                   {error.message}
                 </Typography>
               )}
@@ -240,13 +261,21 @@ export const LabConfigForm: FC<Props> = ({
                   value.length === 1 || "Only one file can be uploaded",
                 isZip: (value) => {
                   const file = value[0];
-                  const allowedTypes = ["application/zip", "application/x-zip-compressed"];
-                  return allowedTypes.includes(file?.type) || "Only .zip files are allowed";
+                  const allowedTypes = [
+                    "application/zip",
+                    "application/x-zip-compressed",
+                  ];
+                  return (
+                    allowedTypes.includes(file?.type) ||
+                    "Only .zip files are allowed"
+                  );
                 },
                 fileSize: (value) => {
                   const file = value[0];
                   const maxSize = 30 * 1024 * 1024; // 30 MB in bytes
-                  return file?.size <= maxSize || "File size must be less than 30 MB";
+                  return (
+                    file?.size <= maxSize || "File size must be less than 30 MB"
+                  );
                 },
               },
             }}
@@ -258,7 +287,11 @@ export const LabConfigForm: FC<Props> = ({
                   multiple={true}
                 />
                 {error && (
-                  <Typography variant="subtitle2" sx={{ ml: 2, fontSize: "12px" }} color={"error"}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ ml: 2, fontSize: "12px" }}
+                    color={"error"}
+                  >
                     {error.message}
                   </Typography>
                 )}
@@ -272,7 +305,10 @@ export const LabConfigForm: FC<Props> = ({
           name="isActive"
           control={control}
           render={({ field }) => (
-            <FormControlLabel control={<Checkbox {...field} defaultChecked />} label="Is Active" />
+            <FormControlLabel
+              control={<Checkbox {...field} defaultChecked />}
+              label="Is Active"
+            />
           )}
         />
       </Stack>

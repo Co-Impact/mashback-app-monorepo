@@ -14,7 +14,7 @@ export const usePostUser = () => {
     onSuccess: () => {
       toast.success("user opened successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error while open user data: ${error.message}`);
     },
   });

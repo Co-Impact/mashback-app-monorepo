@@ -13,7 +13,7 @@ export const useCreateNews = () => {
     onSuccess: () => {
       toast.success("News created successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error creating mews: ${error.message}`);
     },
   });

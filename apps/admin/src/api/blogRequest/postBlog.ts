@@ -18,7 +18,7 @@ export const usePostBusiness = () => {
     onSuccess: () => {
       toast.success("blog create successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error while create business: ${error.message}`);
     },
   });

@@ -8,17 +8,17 @@ const createPackage = async (data: any) => {
 };
 
 export const useCreatePackage = () => {
-    return useMutation({
-        mutationKey: ["feature"],
-        mutationFn: (data: any) => createPackage(data),
-        onSuccess: () => {
-            toast.success('Coupon create successfully!');
-        },
-        onError: (error) => {
-            toast.error(`Error while create coupon: ${error.message}`);
-        }
-    })
-}
+  return useMutation({
+    mutationKey: ["feature"],
+    mutationFn: (data: any) => createPackage(data),
+    onSuccess: () => {
+      toast.success("Coupon create successfully!");
+    },
+    onError: (error: { message: any }) => {
+      toast.error(`Error while create coupon: ${error.message}`);
+    },
+  });
+};
 
 const getFilteredPackage = async (data: IPackages) => {
   return (await backendInstance.post("/package", data)).data;
@@ -28,10 +28,10 @@ export const useGetPackage = () => {
   return useMutation({
     mutationKey: ["labs"],
     mutationFn: (data: IPackages) => getFilteredPackage(data),
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       toast.success("check all packages!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error while get packages: ${error.message}`);
     },
   });

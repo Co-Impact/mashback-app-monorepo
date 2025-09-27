@@ -15,7 +15,7 @@ export const useSendInvite = () => {
     onSuccess: () => {
       toast.success("invitation create successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error while create invitation: ${error.message}`);
     },
   });

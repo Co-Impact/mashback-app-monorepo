@@ -18,7 +18,7 @@ export const usePostEvent = () => {
     onSuccess: () => {
       toast.success("Evente created successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error Creating Events: ${error.message}`);
     },
   });
@@ -27,11 +27,11 @@ export const usePostEvent = () => {
 export const useUpdateEvent = () => {
   return useMutation({
     mutationKey: ["update-event"],
-    mutationFn: (data: any) => updateEvent(data),
+    mutationFn: (data: never) => updateEvent(data),
     onSuccess: () => {
       toast.success("Evente updated successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error Updating Event: ${error.message}`);
     },
   });

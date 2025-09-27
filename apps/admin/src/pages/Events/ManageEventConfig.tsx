@@ -113,7 +113,7 @@ const ManageEventConfig: FC<ManageEventConfigProps> = ({ data }) => {
                     placeholder="Description"
                     fullWidth
                     error={!!errors.note}
-                    helperText={errors.note?.message}
+                    helperText={errors.note?.message as string}
                     InputProps={{
                       endAdornment: !!errors.note && (
                         <InputAdornment position="end">
@@ -151,7 +151,7 @@ const ManageEventConfig: FC<ManageEventConfigProps> = ({ data }) => {
                       ))}
                     </Select>
                     <Typography variant="caption" color="error">
-                      {errors.type?.message}
+                      {errors?.type?.message as string}
                     </Typography>
                   </FormControl>
                 )}

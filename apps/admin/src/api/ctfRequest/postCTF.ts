@@ -8,12 +8,12 @@ const createCTF = async (data: any): Promise<any> => {
 
 export const useCreateCTF = () => {
   return useMutation({
-    mutationKey: ['create-ctf'],
+    mutationKey: ["create-ctf"],
     mutationFn: (data: any) => createCTF(data),
     onSuccess: () => {
       toast.success("CTF created successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error creating CTF: ${error.message}`);
     },
   });

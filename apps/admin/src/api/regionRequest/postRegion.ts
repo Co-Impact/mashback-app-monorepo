@@ -13,7 +13,7 @@ export const useCreateRegion = () => {
     onSuccess: () => {
       toast.success("Region created successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error creating region: ${error.message}`);
     },
   });

@@ -18,7 +18,7 @@ export const useCreateNewBusiness = () => {
     onSuccess: () => {
       toast.success("business create successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error while create business: ${error.message}`);
     },
   });
@@ -31,12 +31,11 @@ export const useUpdateNewBusiness = () => {
     onSuccess: () => {
       toast.success("business create successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error while create business: ${error.message}`);
     },
   });
 };
-
 
 export const useUpdateBusiness = () => {
   return useMutation({
@@ -45,9 +44,9 @@ export const useUpdateBusiness = () => {
     onSuccess: () => {
       toast.success("business updated successfully!");
     },
-    onError: (error) => {
+    onError: (error: { message: any }) => {
       toast.error(`Error updating business: ${error.message}`);
-      throw error
+      throw error;
     },
   });
 };
