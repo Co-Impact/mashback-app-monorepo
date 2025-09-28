@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -8,17 +8,16 @@ import {
   Select,
   TextField,
   Typography,
-} from '@mui/material';
-import { useForm, Controller, useWatch } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { AwsRegion, AzureRegion, CloudProvider, LabServiceType } from './types';
-import { useCreateRegion } from '../../../api/regionRequest/postRegion';
-import { Region } from '../../../api/types';
-import { useUpdateRegion } from '../../../api/regionRequest/updateRegion';
-import { toast } from 'react-toastify';
-import { useQueryClient } from '@tanstack/react-query';
-
+} from "@mui/material";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { AwsRegion, AzureRegion, CloudProvider, LabServiceType } from "./types";
+import { useCreateRegion } from "../../../api/regionRequest/postRegion";
+import { Region } from "../../../api/types";
+import { useUpdateRegion } from "../../../api/regionRequest/updateRegion";
+import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query"; // Validation schema
 
 // Validation schema
 
@@ -30,140 +29,166 @@ const schema = yup.object({
 
   cloudProvider: yup.string().required(),
 
-  AWSRegion: yup.string().when('cloudProvider', (cloudProvider: any, schema) =>
-    cloudProvider == CloudProvider.AWS
-      ? schema.required('AWS Region is required')
-      : schema.notRequired()
-  ),
+  AWSRegion: yup
+    .string()
+    .when("cloudProvider", (cloudProvider: any, schema) =>
+      cloudProvider == CloudProvider.AWS
+        ? schema.required("AWS Region is required")
+        : schema.notRequired(),
+    ),
 
-  AZURERegion: yup.string().when('cloudProvider', (cloudProvider: any, schema) =>
-    cloudProvider == CloudProvider.AZURE
-      ? schema.required('Azure Region is required')
-      : schema.notRequired()
-  ),
+  AZURERegion: yup
+    .string()
+    .when("cloudProvider", (cloudProvider: any, schema) =>
+      cloudProvider == CloudProvider.AZURE
+        ? schema.required("Azure Region is required")
+        : schema.notRequired(),
+    ),
 
-  network: yup.string().when('cloudProvider', (cloudProvider: any, schema) =>
-    cloudProvider == CloudProvider.AWS
-      ? schema.required('Network is required')
-      : schema.notRequired()
-  ),
+  network: yup
+    .string()
+    .when("cloudProvider", (cloudProvider: any, schema) =>
+      cloudProvider == CloudProvider.AWS
+        ? schema.required("Network is required")
+        : schema.notRequired(),
+    ),
 
-  vnetName: yup.string().when('cloudProvider', (cloudProvider: any, schema) =>
-    cloudProvider == CloudProvider.AZURE
-      ? schema.required('VNet Name is required')
-      : schema.notRequired()
-  ),
+  vnetName: yup
+    .string()
+    .when("cloudProvider", (cloudProvider: any, schema) =>
+      cloudProvider == CloudProvider.AZURE
+        ? schema.required("VNet Name is required")
+        : schema.notRequired(),
+    ),
 
-  subnetName: yup.string().when('cloudProvider', (cloudProvider: any, schema) =>
-    cloudProvider == CloudProvider.AZURE
-      ? schema.required('Subnet Name is required')
-      : schema.notRequired()
-  ),
+  subnetName: yup
+    .string()
+    .when("cloudProvider", (cloudProvider: any, schema) =>
+      cloudProvider == CloudProvider.AZURE
+        ? schema.required("Subnet Name is required")
+        : schema.notRequired(),
+    ),
 
-  securityGroupId: yup.string().when('cloudProvider', (cloudProvider: any, schema) =>
-    cloudProvider == CloudProvider.AWS || cloudProvider == CloudProvider.AZURE
-      ? schema.required('Security Group ID is required')
-      : schema.notRequired()
-  ),
+  securityGroupId: yup
+    .string()
+    .when("cloudProvider", (cloudProvider: any, schema) =>
+      cloudProvider == CloudProvider.AWS || cloudProvider == CloudProvider.AZURE
+        ? schema.required("Security Group ID is required")
+        : schema.notRequired(),
+    ),
 });
 
 type FormValues = yup.InferType<typeof schema>;
 
 interface RegionFormProps {
   onActionPerformed: () => void;
-  selectedRegion: Region | null
+  selectedRegion: Region | null;
 }
 
-const RegionForm: React.FC<RegionFormProps> = ({ onActionPerformed, selectedRegion }) => {
-  const createRegion = useCreateRegion()
-  const updateRegion = useUpdateRegion()
-  const queryClient = useQueryClient()
+const RegionForm: React.FC<RegionFormProps> = ({
+  onActionPerformed,
+  selectedRegion,
+}) => {
+  const createRegion = useCreateRegion();
+  const updateRegion = useUpdateRegion();
+  const queryClient = useQueryClient();
   const [cachedRegion, setCachedRegion] = React.useState<string[]>([]);
 
-  const awsRegionCache = queryClient.getQueryData(['filter-region', { cloudProvider: CloudProvider.AWS }]) as Region[]
-  const azureRegionCache = queryClient.getQueryData(['filter-region', { cloudProvider: CloudProvider.AZURE }])  as Region[]
+  const awsRegionCache = queryClient.getQueryData([
+    "filter-region",
+    { cloudProvider: CloudProvider.AWS },
+  ]) as Region[];
+  const azureRegionCache = queryClient.getQueryData([
+    "filter-region",
+    { cloudProvider: CloudProvider.AZURE },
+  ]) as Region[];
 
   useEffect(() => {
-    const data: string[] = []
-    if(awsRegionCache?.length){
-      awsRegionCache.forEach(item=>data.push(item.AWSRegion!))
+    const data: string[] = [];
+    if (awsRegionCache?.length) {
+      awsRegionCache.forEach((item) => data.push(item.AWSRegion!));
     }
-    if(azureRegionCache?.length){
-      azureRegionCache.forEach(item=>data.push(item.AZURERegion!))
+    if (azureRegionCache?.length) {
+      azureRegionCache.forEach((item) => data.push(item.AZURERegion!));
     }
-    setCachedRegion(data)
-  }, [awsRegionCache, azureRegionCache])
+    setCachedRegion(data);
+  }, [awsRegionCache, azureRegionCache]);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm<FormValues>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema as any),
     defaultValues: {
       type: LabServiceType.CTF,
       cloudProvider: CloudProvider.AWS,
-      network: '',
-      vnetName: '',
-      subnetName: '',
-      securityGroupId: '',
-      AWSRegion: '',
-      AZURERegion: '',
+      network: "",
+      vnetName: "",
+      subnetName: "",
+      securityGroupId: "",
+      AWSRegion: "",
+      AZURERegion: "",
     },
   });
 
   useEffect(() => {
     if (!selectedRegion) {
-      reset()
-      return
+      reset();
+      return;
     }
 
     reset({
       type: selectedRegion.type as LabServiceType,
       cloudProvider: selectedRegion.cloudProvider as CloudProvider.AWS,
-      network: selectedRegion.network || '',
-      vnetName: selectedRegion.vnetName || '',
-      subnetName: selectedRegion.subnetName || '',
+      network: selectedRegion.network || "",
+      vnetName: selectedRegion.vnetName || "",
+      subnetName: selectedRegion.subnetName || "",
       securityGroupId: selectedRegion.securityGroupId,
-      AWSRegion: selectedRegion.AWSRegion || '',
-      AZURERegion: selectedRegion.AZURERegion || '',
-    })
+      AWSRegion: selectedRegion.AWSRegion || "",
+      AZURERegion: selectedRegion.AZURERegion || "",
+    });
+  }, [selectedRegion]);
 
-  }, [selectedRegion])
-
-  const cloudProvider = useWatch({ control, name: 'cloudProvider' });
+  const cloudProvider = useWatch({ control, name: "cloudProvider" });
 
   const onSubmit = async (data: FormValues) => {
-    const payload: any = { ...data }
+    const payload: any = { ...data };
     if (data.cloudProvider == CloudProvider.AWS) {
-      payload['AZURERegion'] = null
-      payload['vnetName'] = null
-      payload['subnetName'] = null
+      payload["AZURERegion"] = null;
+      payload["vnetName"] = null;
+      payload["subnetName"] = null;
     } else if (data.cloudProvider == CloudProvider.AZURE) {
-      payload['AWSRegion'] = null
-      payload['network'] = null
+      payload["AWSRegion"] = null;
+      payload["network"] = null;
     }
     if (selectedRegion) {
       if (!selectedRegion?.id) {
-        toast.error('Region ID is required')
-        return
+        toast.error("Region ID is required");
+        return;
       }
-      await updateRegion.mutateAsync({ ...payload, id: selectedRegion.id })
+      await updateRegion.mutateAsync({ ...payload, id: selectedRegion.id });
     } else {
-      await createRegion.mutateAsync(payload)
+      await createRegion.mutateAsync(payload);
     }
     if (selectedRegion?.cloudProvider === data.cloudProvider) {
-      queryClient.refetchQueries({ queryKey: ['filter-region', { cloudProvider: data.cloudProvider }] })
+      queryClient.refetchQueries({
+        queryKey: ["filter-region", { cloudProvider: data.cloudProvider }],
+      });
     } else {
-      queryClient.refetchQueries({ queryKey: ['filter-region', { cloudProvider: CloudProvider.AWS }] })
-      queryClient.refetchQueries({ queryKey: ['filter-region', { cloudProvider: CloudProvider.AZURE }] })
+      queryClient.refetchQueries({
+        queryKey: ["filter-region", { cloudProvider: CloudProvider.AWS }],
+      });
+      queryClient.refetchQueries({
+        queryKey: ["filter-region", { cloudProvider: CloudProvider.AZURE }],
+      });
     }
-    onActionPerformed()
+    onActionPerformed();
   };
 
   return (
-    <Box sx={{ maxWidth: '100%', }}>
+    <Box sx={{ maxWidth: "100%" }}>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         {/* Type */}
         <Controller
@@ -180,7 +205,9 @@ const RegionForm: React.FC<RegionFormProps> = ({ onActionPerformed, selectedRegi
               {...field}
             >
               {Object.values(LabServiceType).map((type) => (
-                <MenuItem key={type} value={type}>{type}</MenuItem>
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
               ))}
             </TextField>
           )}
@@ -201,7 +228,9 @@ const RegionForm: React.FC<RegionFormProps> = ({ onActionPerformed, selectedRegi
               {...field}
             >
               {Object.values(CloudProvider).map((provider) => (
-                <MenuItem key={provider} value={provider}>{provider}</MenuItem>
+                <MenuItem key={provider} value={provider}>
+                  {provider}
+                </MenuItem>
               ))}
             </TextField>
           )}
@@ -214,15 +243,23 @@ const RegionForm: React.FC<RegionFormProps> = ({ onActionPerformed, selectedRegi
             control={control}
             render={({ field, fieldState: { error } }) => (
               <FormControl fullWidth margin="normal" error={!!error}>
-                <InputLabel sx={{ color: "text.primary" }}>AWS Region</InputLabel>
+                <InputLabel sx={{ color: "text.primary" }}>
+                  AWS Region
+                </InputLabel>
                 <Select {...field} label="AWS Region">
-                  {Object.entries(AwsRegion).filter(item=>!cachedRegion.includes(item[0])).map(([key, value]) => (
-                    <MenuItem key={key} value={key}>
-                      {value}
-                    </MenuItem>
-                  ))}
+                  {Object.entries(AwsRegion)
+                    .filter((item) => !cachedRegion.includes(item[0]))
+                    .map(([key, value]) => (
+                      <MenuItem key={key} value={key}>
+                        {value}
+                      </MenuItem>
+                    ))}
                 </Select>
-                {error && <Typography variant='body2' color={'error'}>{error.message}</Typography>}
+                {error && (
+                  <Typography variant="body2" color={"error"}>
+                    {error.message}
+                  </Typography>
+                )}
               </FormControl>
             )}
           />
@@ -235,22 +272,30 @@ const RegionForm: React.FC<RegionFormProps> = ({ onActionPerformed, selectedRegi
             control={control}
             render={({ field, fieldState: { error } }) => (
               <FormControl fullWidth margin="normal" error={!!error}>
-                <InputLabel sx={{ color: "text.primary" }}>AZURE Region</InputLabel>
+                <InputLabel sx={{ color: "text.primary" }}>
+                  AZURE Region
+                </InputLabel>
                 <Select {...field} label="AZURE Region">
-                  {Object.values(AzureRegion).filter(item=>!cachedRegion.includes(item)).map((region) => (
-                    <MenuItem key={region} value={region}>{region}</MenuItem>
-                  ))}
+                  {Object.values(AzureRegion)
+                    .filter((item) => !cachedRegion.includes(item))
+                    .map((region) => (
+                      <MenuItem key={region} value={region}>
+                        {region}
+                      </MenuItem>
+                    ))}
                 </Select>
-                {error && <Typography variant='body2' color={'error'}>{error.message}</Typography>}
+                {error && (
+                  <Typography variant="body2" color={"error"}>
+                    {error.message}
+                  </Typography>
+                )}
               </FormControl>
             )}
           />
         )}
 
-
         {/* Network */}
-        {
-          cloudProvider === CloudProvider.AWS &&
+        {cloudProvider === CloudProvider.AWS && (
           <Controller
             name="network"
             control={control}
@@ -265,10 +310,9 @@ const RegionForm: React.FC<RegionFormProps> = ({ onActionPerformed, selectedRegi
               />
             )}
           />
-        }
+        )}
 
-        {
-          cloudProvider === CloudProvider.AZURE &&
+        {cloudProvider === CloudProvider.AZURE && (
           <>
             <Controller
               name="vnetName"
@@ -299,7 +343,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ onActionPerformed, selectedRegi
               )}
             />
           </>
-        }
+        )}
 
         {/* Security Group ID */}
         <Controller
@@ -318,8 +362,21 @@ const RegionForm: React.FC<RegionFormProps> = ({ onActionPerformed, selectedRegi
         />
 
         {/* Submit Button */}
-        <Button disabled={createRegion.isPending || updateRegion.isPending} type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-          {selectedRegion ? updateRegion.isPending ? 'Updating Region...' : 'Update Region' : createRegion.isPending ? 'Creating Region...' : 'Create Region'}
+        <Button
+          disabled={createRegion.isPending || updateRegion.isPending}
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+        >
+          {selectedRegion
+            ? updateRegion.isPending
+              ? "Updating Region..."
+              : "Update Region"
+            : createRegion.isPending
+              ? "Creating Region..."
+              : "Create Region"}
         </Button>
       </form>
     </Box>

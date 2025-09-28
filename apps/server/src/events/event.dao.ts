@@ -17,6 +17,10 @@ export class EventDao {
     return this.prismaClient.events.findUniqueOrThrow({ where: { id } });
   }
 
+  getEventFilter() {
+    return this.prismaClient.events.findMany();
+  }
+
   updateEvent(id: string, data) {
     return this.prismaClient.events.update({ where: { id }, data });
   }

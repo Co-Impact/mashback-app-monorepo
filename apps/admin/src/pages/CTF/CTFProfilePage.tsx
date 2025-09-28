@@ -20,6 +20,13 @@ import { useGetCTFById } from "../../api/ctfRequest/getCTF";
 import { useParams } from "react-router";
 import { LabTableColumns } from "./LabTableColumns";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+} from "react";
 
 const CTFProfilePage = () => {
   const { id } = useParams();
@@ -84,48 +91,88 @@ const CTFProfilePage = () => {
                 >
                   Active CTF
                 </Typography>
-                {ctf.data?.ActiveCTF.map((ctf) => (
-                  <Accordion
-                    sx={{ background: "transparent", mb: 2 }}
-                    key={ctf.id}
-                  >
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography variant="h6">{ctf.name}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>Involve: {ctf.involve}</Typography>
-                      <Typography>
-                        Requires Registration:{" "}
-                        {ctf.requiresRegistration ? "Yes" : "No"}
-                      </Typography>
-                      <Typography>
-                        Max Participants: {ctf.maxParticipants}
-                      </Typography>
-                      <Typography>
-                        Start Date:{" "}
-                        {new Date(ctf.startDate).toLocaleDateString()}
-                      </Typography>
-                      <Typography>
-                        End Date: {new Date(ctf.endDate).toLocaleDateString()}
-                      </Typography>
+                {ctf.data?.ActiveCTF.map(
+                  (ctf: {
+                    id: Key | null | undefined;
+                    name:
+                      | string
+                      | number
+                      | boolean
+                      | ReactElement<any, string | JSXElementConstructor<any>>
+                      | Iterable<ReactNode>
+                      | ReactPortal
+                      | null
+                      | undefined;
+                    involve:
+                      | string
+                      | number
+                      | boolean
+                      | ReactElement<any, string | JSXElementConstructor<any>>
+                      | Iterable<ReactNode>
+                      | ReactPortal
+                      | null
+                      | undefined;
+                    requiresRegistration: any;
+                    maxParticipants:
+                      | string
+                      | number
+                      | boolean
+                      | ReactElement<any, string | JSXElementConstructor<any>>
+                      | Iterable<ReactNode>
+                      | ReactPortal
+                      | null
+                      | undefined;
+                    startDate: string | number | Date;
+                    endDate: string | number | Date;
+                    prize: { place: Key | null | undefined; prize: any }[];
+                  }) => (
+                    <Accordion
+                      sx={{ background: "transparent", mb: 2 }}
+                      key={ctf.id}
+                    >
+                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="h6">{ctf.name}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography>Involve: {ctf.involve}</Typography>
+                        <Typography>
+                          Requires Registration:{" "}
+                          {ctf.requiresRegistration ? "Yes" : "No"}
+                        </Typography>
+                        <Typography>
+                          Max Participants: {ctf.maxParticipants}
+                        </Typography>
+                        <Typography>
+                          Start Date:{" "}
+                          {new Date(ctf.startDate).toLocaleDateString()}
+                        </Typography>
+                        <Typography>
+                          End Date: {new Date(ctf.endDate).toLocaleDateString()}
+                        </Typography>
 
-                      {ctf.prize.length > 0 && (
-                        <>
-                          <Typography sx={{ mt: 1 }}>Prizes:</Typography>
-                          <List dense>
-                            {ctf.prize.map((p) => (
-                              <ListItem key={p.place}>
-                                <ListItemText
-                                  primary={`Place ${p.place}: ${p.prize}`}
-                                />
-                              </ListItem>
-                            ))}
-                          </List>
-                        </>
-                      )}
-                    </AccordionDetails>
-                  </Accordion>
-                ))}
+                        {ctf.prize.length > 0 && (
+                          <>
+                            <Typography sx={{ mt: 1 }}>Prizes:</Typography>
+                            <List dense>
+                              {ctf.prize.map(
+                                (p: {
+                                  place: Key | null | undefined;
+                                  prize: any;
+                                }) => (
+                                  <ListItem key={p.place}>
+                                    <ListItemText
+                                      primary={`Place ${p.place}: ${p.prize}`}
+                                    />
+                                  </ListItem>
+                                ),
+                              )}
+                            </List>
+                          </>
+                        )}
+                      </AccordionDetails>
+                    </Accordion>
+                  ),
+                )}
               </Card>
             </Grid>
             {/* <Grid item md={6} xs={12}>

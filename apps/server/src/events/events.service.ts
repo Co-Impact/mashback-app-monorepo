@@ -7,22 +7,22 @@ import { EventDao } from './event.dao';
 export class EventsService {
   constructor(private readonly eventDao: EventDao) {}
   createEvent(createEventDto: CreateEventDto) {
-    return this.eventDao;
+    return this.eventDao.createEvent(createEventDto);
   }
 
   getAllEvents() {
-    return `This action returns all events`;
+    return this.eventDao.getAllEvents();
   }
 
-  getEventByID(id: number) {
-    return `This action returns a #${id} event`;
+  getEventByID(id: string) {
+    return this.eventDao.getEventByID(id);
   }
 
-  updateEvent(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+  updateEvent(id: string, data: UpdateEventDto) {
+    return this.eventDao.updateEvent(id, data);
   }
 
-  deleteEvent(id: number) {
-    return `This action removes a #${id} event`;
+  deleteEvent(id: string) {
+    return this.eventDao.deleteEvent(id);
   }
 }

@@ -25,6 +25,11 @@ export class EventsController {
     return this.eventsService.getAllEvents();
   }
 
+  @Post('filter')
+  getEventsFilter(@Body() data: any) {
+    // return this
+  }
+
   @Get(':id')
   getEventByID(@Param('id') id: string) {
     return this.eventsService.getEventByID(+id);

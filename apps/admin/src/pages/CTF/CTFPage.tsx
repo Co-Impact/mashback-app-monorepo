@@ -9,35 +9,50 @@ import { useModal } from "../../hooks/useModal.tsx";
 import RunCtfForm from "../../components/Forms/RunCtf/RunCtfForm.tsx";
 import { CTFDisplayData } from "./type.ts";
 import { useGetActiveCtfFilter } from "../../api/runCtfRequest/getRunCtf.ts";
-import { RunCtfTableColumn } from "./RunCtfTableColumn.tsx";
 import CardV2 from "../../components/Card/CardV2.tsx";
 
 const CTFPage: FC = () => {
-  const { Modal: RunCtfModal, open: openRunCtfModal, isOpen: isOpenRunCtfModal, close: closeRunCtfModal } = useModal()
-  const { Modal: CreateCtfModal, open: openCreateCtfModal, isOpen: isOpenCreateCtfModal, close: closeCreateCtfModal } = useModal()
+  const {
+    Modal: RunCtfModal,
+    open: openRunCtfModal,
+    isOpen: isOpenRunCtfModal,
+    close: closeRunCtfModal,
+  } = useModal();
+  const {
+    Modal: CreateCtfModal,
+    open: openCreateCtfModal,
+    isOpen: isOpenCreateCtfModal,
+    close: closeCreateCtfModal,
+  } = useModal();
 
   const ctf = useGetAllCTF();
-  const activeCtf = useGetActiveCtfFilter()
-  const [activeCtfData, setActiveCtfData] = useState<CTFDisplayData[]>([])
+  const activeCtf = useGetActiveCtfFilter();
+  const [activeCtfData, setActiveCtfData] = useState<CTFDisplayData[]>([]);
 
   useEffect(() => {
     if (!activeCtf.data) return;
-    const data = activeCtf.data.map((ctf) => ({
-      name: ctf.name,
-      startDate: new Date(ctf.startDate).toLocaleDateString(),
-      endDate: new Date(ctf.endDate).toLocaleDateString(),
-      involve: ctf.involve,
-      joined: ctf._count.ActiveCTFParticipants,
-    }))
+    const data = activeCtf.data.map(
+      (ctf: {
+        name: any;
+        startDate: string | number | Date;
+        endDate: string | number | Date;
+        involve: any;
+        _count: { ActiveCTFParticipants: any };
+      }) => ({
+        name: ctf.name,
+        startDate: new Date(ctf.startDate).toLocaleDateString(),
+        endDate: new Date(ctf.endDate).toLocaleDateString(),
+        involve: ctf.involve,
+        joined: ctf._count.ActiveCTFParticipants,
+      }),
+    );
 
-    setActiveCtfData(data as any)
+    setActiveCtfData(data as any);
+  }, [activeCtf.isLoading, activeCtf.data]);
 
-  }, [activeCtf.isLoading, activeCtf.data])
-
-  const activeCtfCount = activeCtf.data?.length ?? 0
-  const totalCtf = ctf.data?.length ??0
-  const inActiveCtfCount = totalCtf-activeCtfCount
-
+  const activeCtfCount = activeCtf.data?.length ?? 0;
+  const totalCtf = ctf.data?.length ?? 0;
+  const inActiveCtfCount = totalCtf - activeCtfCount;
 
   const ctfCards = [
     { title: "Total Active CTF", value: activeCtfCount },
@@ -65,9 +80,17 @@ const CTFPage: FC = () => {
           ))}
         </Grid>
       </Box>
-      <Stack justifyContent={'space-between'} alignItems={'center'} direction='row' mt={4} mb={2}>
-        <Typography sx={{ color: 'text.primary' }} variant="h6">CTF</Typography>
-        <Stack direction={'row'} spacing={2}>
+      <Stack
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        direction="row"
+        mt={4}
+        mb={2}
+      >
+        <Typography sx={{ color: "text.primary" }} variant="h6">
+          CTF
+        </Typography>
+        <Stack direction={"row"} spacing={2}>
           <Button size="small" variant="contained" onClick={openCreateCtfModal}>
             Create New CTF
           </Button>
@@ -77,36 +100,33 @@ const CTFPage: FC = () => {
         </Stack>
       </Stack>
 
-      <CreateCtfModal title="Create CTF" showCloseIcon open={isOpenCreateCtfModal}>
+      <CreateCtfModal
+        title="Create CTF"
+        showCloseIcon
+        open={isOpenCreateCtfModal}
+      >
         <CTFForm onClose={closeCreateCtfModal} />
       </CreateCtfModal>
 
-      {
-        isOpenRunCtfModal &&
+      {isOpenRunCtfModal && (
         <RunCtfModal open={isOpenRunCtfModal} title="Run CTF" showCloseIcon>
-          <RunCtfForm
-            close={closeRunCtfModal}
-          />
+          <RunCtfForm close={closeRunCtfModal} />
         </RunCtfModal>
-      }
+      )}
 
       <Grid container spacing={2}>
         <Grid item md={5} sm={12}>
-          <Typography sx={{ color: 'text.primary', mb: 1, ml: 1 }} variant="body1">ALL CTF</Typography>
-          {
-            ctf.isLoading ?
-              <ShowSkeleton viewType="table" /> :
-              <Table data={ctf.data || []} columnsProp={CTFTableColumn} />
-          }
-        </Grid>
-        <Grid item md={7} sm={12}>
-          <Typography sx={{ color: 'text.primary', mb: 1, ml: 1 }} variant="body1">ACTIVE CTF</Typography>
-
-          {
-            activeCtf.isLoading ?
-              <ShowSkeleton viewType="table" /> :
-              <Table data={activeCtfData} columnsProp={RunCtfTableColumn} />
-          }
+          <Typography
+            sx={{ color: "text.primary", mb: 1, ml: 1 }}
+            variant="body1"
+          >
+            ALL CTF
+          </Typography>
+          {ctf.isLoading ? (
+            <ShowSkeleton viewType="table" />
+          ) : (
+            <Table data={ctf.data || []} columnsProp={CTFTableColumn} />
+          )}
         </Grid>
       </Grid>
     </Container>
