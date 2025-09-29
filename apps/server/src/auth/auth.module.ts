@@ -7,6 +7,7 @@ import { HttpModule } from '@nestjs/axios';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
+  exports: [AuthService, AuthDao],
   imports: [
     HttpModule.register({
       timeout: 5000,

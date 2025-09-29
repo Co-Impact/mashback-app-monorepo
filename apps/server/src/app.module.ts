@@ -13,6 +13,7 @@ import { userDao } from './users/dao/user.dao';
 import { TeamService } from './users/service/team.service';
 import { TeamDao } from './users/dao/team.dao';
 import { PrismaClient } from '@prisma/client';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -25,6 +26,13 @@ import { PrismaClient } from '@prisma/client';
     AuthModule,
   ],
   controllers: [AppController, TeamController],
-  providers: [AppService, userDao, TeamService, TeamDao, PrismaClient],
+  providers: [
+    AppService,
+    userDao,
+    TeamService,
+    TeamDao,
+    PrismaClient,
+    AuthService,
+  ],
 })
 export class AppModule {}
