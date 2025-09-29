@@ -1,18 +1,18 @@
-import {CSSProperties, FC, Fragment, useState} from "react";
+import { CSSProperties, FC, Fragment, useState } from "react";
 import {
-    ColumnDef,
-    ColumnFiltersState,
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
+  ColumnDef,
+  ColumnFiltersState,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 import "../../style/Table.scss";
-import {TableContainer} from "./table.styled";
-import {Divider, SxProps, Theme} from "@mui/material";
+import { TableContainer } from "./table.styled";
+import { Divider, SxProps, Theme } from "@mui/material";
 
 interface GenericTableProps {
   data: Array<any>;
@@ -76,6 +76,10 @@ export const Table: FC<GenericTableProps> = ({
     filterFns: {},
     state: {
       columnFilters,
+      pagination: {
+        pageIndex: 0,
+        pageSize: 50,
+      },
     },
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

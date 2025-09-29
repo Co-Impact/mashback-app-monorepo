@@ -52,11 +52,11 @@ export const usersTable: Array<ITableColumn> = [
     },
   },
   {
-    id: "status",
-    accessorKey: "status",
+    id: "isActive",
+    accessorKey: "isActive",
     header: () => "Active",
     cell: (item) =>
-      item ? (
+      item.getValue() ? (
         <Chip label="Active" color="success" size="small" />
       ) : (
         <Chip label="Desactive" color="error" size="small" />

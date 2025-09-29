@@ -54,6 +54,29 @@ model User {
   PasswordReset       PasswordReset[]
   TwoFactorAuth       TwoFactorAuth[]
   University          University?         @relation(fields: [universityId], references: [id])
+  UserSettings        UserSettings?
+  Team                Team[]
+  TeamMember          TeamMember[]
+}
+
+model UserSettings {
+  id                     String   @id @default(uuid())
+  userId                 String   @unique
+  user                   User     @relation(fields: [userId], references: [id])
+  showProfileImage       Boolean  @default(true)
+  showProfileStatistic   Boolean  @default(true)
+  showEmailAddress       Boolean  @default(true)
+  showSocialMediaDetails Boolean  @default(true)
+  emailNotifications     Boolean  @default(true)
+  pushNotifications      Boolean  @default(true)
+  smsNotifications       Boolean  @default(false)
+  theme                  String   @default("light")
+  language               String   @default("en")
+  timezone               String?
+  twoFactorEnabled       Boolean  @default(false)
+  loginAlerts            Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }
 
 enum InvitationStatus {
@@ -150,6 +173,12 @@ model AuthProvider {
   @@unique([provider, providerId])
 }
 
+enum InvetationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 enum AuthProviderType {
   GOOGLE
   LINKEDIN
@@ -172,6 +201,35 @@ model Group {
   users         User[]
   groupMessages GroupMessage[]
   createdAt     DateTime       @default(now())
+}
+
+model Team {
+  id        String       @id @default(uuid())
+  name      String
+  ownerId   String
+  owner     User         @relation(fields: [ownerId], references: [id])
+  members   TeamMember[]
+  point     Int          @default(0)
+  isActive  Boolean      @default(true)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  deletedAt DateTime?
+
+  @@index([ownerId])
+}
+
+model TeamMember {
+  id        String           @id @default(uuid())
+  userId    String
+  teamId    String
+  user      User             @relation(fields: [userId], references: [id])
+  team      Team             @relation(fields: [teamId], references: [id])
+  status    InvetationStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+
+  @@unique([userId, teamId])
+  @@index([userId])
+  @@index([teamId])
 }
 
 model Job {

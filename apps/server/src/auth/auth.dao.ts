@@ -63,7 +63,7 @@ export class AuthDao {
         deletedAt: null,
       },
     });
-    console.log(user);
+    console.log(user, 'user');
     if (!user) {
       throw new HttpException(
         'ErrorMessages.AUTH.INVALID_CREDENTIALS',

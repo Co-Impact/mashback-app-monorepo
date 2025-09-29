@@ -20,6 +20,7 @@ import CardV2 from "../../components/Card/CardV2.tsx";
 
 const UserPage: FC = () => {
   const { data, isError, isLoading } = useGetAllUsers();
+  console.log(data?.length);
   const { data: statisticData, isLoading: statisticLoading } =
     useGetUsersStatistics();
 

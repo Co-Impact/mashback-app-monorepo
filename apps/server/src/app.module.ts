@@ -8,10 +8,23 @@ import { PollsModule } from './polls/polls.module';
 import { EventsModule } from './events/events.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AuthModule } from './auth/auth.module';
+import { TeamController } from './users/controllers/team.controller';
+import { userDao } from './users/dao/user.dao';
+import { TeamService } from './users/service/team.service';
+import { TeamDao } from './users/dao/team.dao';
+import { PrismaClient } from '@prisma/client';
 
 @Module({
-  imports: [UsersModule, GroupsModule, JobsModule, PollsModule, EventsModule, NotificationsModule, AuthModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    UsersModule,
+    GroupsModule,
+    JobsModule,
+    PollsModule,
+    EventsModule,
+    NotificationsModule,
+    AuthModule,
+  ],
+  controllers: [AppController, TeamController],
+  providers: [AppService, userDao, TeamService, TeamDao, PrismaClient],
 })
 export class AppModule {}

@@ -1,5 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Avatar, Box, Card, CardContent, Container, Grid, Paper, Stack, Switch, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  Paper,
+  Stack,
+  Switch,
+  Typography,
+} from "@mui/material";
 import { useParams } from "react-router";
 import UserProfileSkeleton from "./UserProfileSkeleton";
 import { PageTabs, TabItem } from "../../components/Tabs/Tabs";
@@ -16,7 +27,7 @@ const UserProfilePage: React.FC = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetUserByID(id ?? "");
   const updateProfile = useUpdateProfile();
-  const [userIsActive, setUserIsActive] = useState(false);
+  const [userIsActive, setUserIsActive] = useState(data?.isActive || false);
 
   useEffect(() => {
     if (!data) return;
@@ -67,7 +78,7 @@ const UserProfilePage: React.FC = () => {
       setUserIsActive((prev) => !prev);
       await updateProfile.mutateAsync({ id, isActive: !userIsActive });
     } catch (err) {
-      setUserIsActive(!!data?.isOnline);
+      setUserIsActive(!!data?.isActive);
     }
   }
 
@@ -105,7 +116,7 @@ const UserProfilePage: React.FC = () => {
                           Active Status
                         </Typography>
                         <Switch
-                          checked={userIsActive}
+                          checked={data.isActive || userIsActive}
                           onChange={handleActiveChange}
                         />
                       </Stack>
