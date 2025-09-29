@@ -1,9 +1,9 @@
-import { UserProfile } from "../../pages/user/types";
-import { backendInstance } from "../api";
-import { useQuery } from "@tanstack/react-query";
+import {UserProfile} from "../../pages/user/types";
+import {backendInstance} from "../api";
+import {useQuery} from "@tanstack/react-query";
 
 const getAllUsers = async () => {
-  return (await backendInstance.get("/users/all")).data;
+  return (await backendInstance.get("/users")).data;
 };
 
 const getAllUsersStatistics = async () => {
