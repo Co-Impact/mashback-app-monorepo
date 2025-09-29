@@ -1,18 +1,18 @@
-import { CSSProperties, FC, Fragment, useState } from "react";
+import {CSSProperties, FC, Fragment, useState} from "react";
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
+    ColumnDef,
+    ColumnFiltersState,
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    useReactTable,
 } from "@tanstack/react-table";
 import "../../style/Table.scss";
-import { TableContainer } from "./table.styled";
-import { Divider, SxProps, Theme } from "@mui/material";
+import {TableContainer} from "./table.styled";
+import {Divider, SxProps, Theme} from "@mui/material";
 
 interface GenericTableProps {
   data: Array<any>;
@@ -39,13 +39,21 @@ interface ITableColumn {
 
 type Filter = "range" | "select";
 
+// 🔑 Helper to make React happy with bigint
+function normalizeReactNode(value: unknown): React.ReactNode {
+  if (typeof value === "bigint") {
+    return value.toString();
+  }
+  return value as React.ReactNode;
+}
+
 export const Table: FC<GenericTableProps> = ({
   data,
   columnsProp,
   enableFooter,
   isExpandedRows,
   hideTableHeader = false,
-  customStyles = {}
+  customStyles = {},
 }) => {
   const columnHelper = createColumnHelper();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -98,9 +106,11 @@ export const Table: FC<GenericTableProps> = ({
                             onClick: header.column.getToggleSortingHandler(),
                           }}
                         >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
+                          {normalizeReactNode(
+                            flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            ),
                           )}
                           {header.column.getIsSorted() === "asc" ? " 🔼" : ""}
                           {header.column.getIsSorted() === "desc" ? " 🔽" : ""}
@@ -122,7 +132,12 @@ export const Table: FC<GenericTableProps> = ({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {normalizeReactNode(
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        ),
+                      )}
                     </td>
                   ))}
                 </tr>
@@ -153,9 +168,11 @@ export const Table: FC<GenericTableProps> = ({
                     <th key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.footer,
-                            header.getContext(),
+                        : normalizeReactNode(
+                            flexRender(
+                              header.column.columnDef.footer,
+                              header.getContext(),
+                            ),
                           )}
                     </th>
                   ))}

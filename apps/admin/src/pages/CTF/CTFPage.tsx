@@ -1,14 +1,13 @@
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import { Table } from "../../components/Table/GenericTable";
-import { CTFForm } from "../../components/Dialog/CTFForm.tsx";
-import { useGetAllCTF } from "../../api/ctfRequest/getCTF.ts";
+import {Box, Button, Container, Grid, Stack, Typography} from "@mui/material";
+import {FC, useEffect, useState} from "react";
+import {Table} from "../../components/Table/GenericTable";
+import {CTFForm} from "../../components/Dialog/CTFForm.tsx";
+import {useGetAllCTF} from "../../api/ctfRequest/getCTF.ts";
 import ShowSkeleton from "../../components/Skeleton/ShowSkeleton.tsx";
-import { CTFTableColumn } from "./CtfTableColumns.tsx";
-import { useModal } from "../../hooks/useModal.tsx";
-import RunCtfForm from "../../components/Forms/RunCtf/RunCtfForm.tsx";
-import { CTFDisplayData } from "./type.ts";
-import { useGetActiveCtfFilter } from "../../api/runCtfRequest/getRunCtf.ts";
+import {CTFTableColumn} from "./CtfTableColumns.tsx";
+import {useModal} from "../../hooks/useModal.tsx";
+import {CTFDisplayData} from "./type.ts";
+import {useGetActiveCtfFilter} from "../../api/runCtfRequest/getRunCtf.ts";
 import CardV2 from "../../components/Card/CardV2.tsx";
 
 const CTFPage: FC = () => {
@@ -107,12 +106,6 @@ const CTFPage: FC = () => {
       >
         <CTFForm onClose={closeCreateCtfModal} />
       </CreateCtfModal>
-
-      {isOpenRunCtfModal && (
-        <RunCtfModal open={isOpenRunCtfModal} title="Run CTF" showCloseIcon>
-          <RunCtfForm close={closeRunCtfModal} />
-        </RunCtfModal>
-      )}
 
       <Grid container spacing={2}>
         <Grid item md={5} sm={12}>

@@ -1,7 +1,7 @@
-import { backendInstance } from "../api.ts";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
-import { CreatedEvent, IEvent } from "../types.ts";
+import {backendInstance} from "../api.ts";
+import {useMutation} from "@tanstack/react-query";
+import {toast} from "react-toastify";
+import {CreatedEvent, IEvent} from "../types.ts";
 
 const createNewEvent = async (data: CreatedEvent) => {
   return (await backendInstance.post("/events", data)).data;
@@ -27,7 +27,7 @@ export const usePostEvent = () => {
 export const useUpdateEvent = () => {
   return useMutation({
     mutationKey: ["update-event"],
-    mutationFn: (data: never) => updateEvent(data),
+    mutationFn: (data: any) => updateEvent(data),
     onSuccess: () => {
       toast.success("Evente updated successfully!");
     },
