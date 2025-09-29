@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from "vite";
+import {defineConfig, loadEnv} from "vite";
 import react from "@vitejs/plugin-react";
 
 interface Prop {
@@ -14,6 +14,8 @@ export default ({ mode }: Prop) => {
     },
     preview: {
       port: parseInt(process.env.VITE_PORT as string),
+        allowedHosts: true,
+        host: true,
     },
   });
 };
