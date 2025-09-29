@@ -1,18 +1,19 @@
-import { FC } from "react"
-import { UserProfile } from "../types"
-import { Stack, Typography } from "@mui/material"
+import { FC } from "react";
+import { UserProfile } from "../types";
+import { Stack, Typography } from "@mui/material";
 
 interface UserBillingsTabProps {
-    currentUser: UserProfile
+  currentUser: UserProfile;
 }
 
 const UserBillingsTab: FC<UserBillingsTabProps> = ({ currentUser }) => {
-    return (
-        <Stack>
-            <Typography variant="h6">{currentUser.firstName}'s Package & Billings</Typography>
+  return (
+    <Stack>
+      <Typography variant="h6">
+        {currentUser.firstName}'s Package & Billings
+      </Typography>
+    </Stack>
+  );
+};
 
-        </Stack>
-    )
-}
-
-export default UserBillingsTab
+export default UserBillingsTab;

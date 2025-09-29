@@ -10,6 +10,7 @@ import UserTeamsTab from "./UserProfileTabs/UserTeamsTab.tsx";
 import UserStatisticsTab from "./UserProfileTabs/UserStatisticsTab.tsx";
 import UserDetailsTab from "./UserProfileTabs/UserDetailsTab.tsx";
 import UserEventsTab from "./UserProfileTabs/UserEventsTab.tsx";
+import UserBillingsTab from "./UserProfileTabs/UserBillingsTab.tsx";
 
 const UserProfilePage: React.FC = () => {
   const { id } = useParams();
@@ -44,11 +45,11 @@ const UserProfilePage: React.FC = () => {
         value: "statistics",
         children: <UserStatisticsTab currentUser={data!} />,
       },
-      // {
-      //   label: "Billings",
-      //   value: "bilings",
-      //   children: <UserBillingsTab currentUser={data!} />,
-      // },
+      {
+        label: "Coffee Meetings",
+        value: "bilings",
+        children: <UserBillingsTab currentUser={data!} />,
+      },
     ],
     [data],
   );
