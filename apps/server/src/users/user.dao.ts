@@ -29,4 +29,11 @@ export class userDao {
   getAllUsers() {
     return this.prismaClient.user.findMany();
   }
+
+  updateUser(id: string, data) {
+    return this.prismaClient.user.update({
+      where: { id },
+      data,
+    });
+  }
 }

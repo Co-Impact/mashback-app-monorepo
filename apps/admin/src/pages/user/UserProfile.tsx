@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Avatar,
   Box,
@@ -19,8 +19,9 @@ import { useUpdateProfile } from "../../api/usersRequest/updateProfile.ts";
 import { toast } from "react-toastify";
 import UserTeamsTab from "./UserProfileTabs/UserTeamsTab.tsx";
 import UserStatisticsTab from "./UserProfileTabs/UserStatisticsTab.tsx";
-import UserLabsTab from "./UserProfileTabs/UserLabsTab.tsx";
 import UserBillingsTab from "./UserProfileTabs/UserBillingsTab.tsx";
+import UserDetailsTab from "./UserProfileTabs/UserDetailsTab.tsx";
+import UserEventsTab from "./UserProfileTabs/UserEventsTab.tsx";
 
 const UserProfilePage: React.FC = () => {
   const { id } = useParams();
@@ -30,35 +31,43 @@ const UserProfilePage: React.FC = () => {
 
   useEffect(() => {
     if (!data) return;
-    setUserIsActive(data.isActive);
-  }, [isLoading, data]);
+    setUserIsActive(data.isOnline ?? false);
+  }, [data]);
+
+  const tabs: TabItem[] = useMemo(
+    () => [
+      {
+        label: "User Details",
+        value: "user-details",
+        children: <UserDetailsTab currentUser={data!} />,
+      },
+      {
+        label: "Teams",
+        value: "teams",
+        children: <UserTeamsTab currentUser={data!} />,
+      },
+      {
+        label: "Events",
+        value: "events",
+        children: <UserEventsTab currentUser={data!} />,
+      },
+      {
+        label: "Statistics",
+        value: "statistics",
+        children: <UserStatisticsTab currentUser={data!} />,
+      },
+      {
+        label: "Billings",
+        value: "bilings",
+        children: <UserBillingsTab currentUser={data!} />,
+      },
+    ],
+    [data],
+  );
 
   if (!data || isLoading) {
     return <UserProfileSkeleton />;
   }
-
-  const tabs: TabItem[] = [
-    {
-      label: "Teams",
-      value: "teams",
-      children: <UserTeamsTab currentUser={data} />,
-    },
-    {
-      label: "Labs",
-      value: "labs",
-      children: <UserLabsTab currentUser={data} />,
-    },
-    {
-      label: "Statistics",
-      value: "statistics",
-      children: <UserStatisticsTab currentUser={data} />,
-    },
-    {
-      label: "Billings",
-      value: "bilings",
-      children: <UserBillingsTab currentUser={data} />,
-    },
-  ];
 
   async function handleActiveChange() {
     if (!id) {
@@ -67,94 +76,93 @@ const UserProfilePage: React.FC = () => {
     }
     try {
       setUserIsActive((prev) => !prev);
-      await updateProfile.mutateAsync({ id, isActive: !userIsActive });
+      await updateProfile.mutateAsync({ id, isOnline: !userIsActive });
     } catch (err) {
-      setUserIsActive(!!data?.isActive);
+      setUserIsActive(!!data?.isOnline);
     }
   }
 
   return (
     <Box sx={{ minHeight: "100vh", pb: 5 }}>
       <Container>
-        <Grid container spacing={3}>
+        <Grid container spacing={2} alignItems="stretch">
           {/* Sidebar */}
-          <Grid>
-            <Card>
-              <CardContent
-                sx={{ textAlign: "center", justifyContent: "center" }}
-              >
-                <Stack alignItems={"center"} spacing={1}>
-                  <Avatar
-                    alt={`${data.firstName} ${data.lastName}`}
-                    src={data.imageUrl || ""}
-                    sx={{ width: 100, height: 100, margin: "0 auto", mb: 2 }}
-                  />
-                  <Typography variant="h6">{`${data.firstName} ${data.lastName}`}</Typography>
-                  <Stack
-                    width="max-content"
-                    justifyContent={"start"}
-                    alignItems={"center"}
-                    spacing={2}
-                  >
+          <Grid item xs={12} md={3.5}>
+            <Box sx={{ height: "100%" }}>
+              <Card sx={{ height: "100%" }}>
+                <CardContent
+                  sx={{ textAlign: "center", justifyContent: "center" }}
+                >
+                  <Stack alignItems={"center"} spacing={1}>
+                    <Avatar
+                      alt={`${data.firstName} ${data.lastName}`}
+                      src={data.imageUrl || ""}
+                      sx={{ width: 100, height: 100, margin: "0 auto", mb: 2 }}
+                    />
+                    <Typography variant="h6">{`${data.firstName} ${data.lastName}`}</Typography>
                     <Stack
-                      width={"100%"}
-                      direction={"row"}
-                      alignItems={"center"}
-                      spacing={1}
+                      width="max-content"
+                      justifyContent="start"
+                      alignItems="center"
+                      spacing={2}
                     >
-                      <Typography
-                        variant="body1"
-                        sx={{ fontWeight: 600 }}
-                        fontWeight={600}
+                      <Stack
+                        width="100%"
+                        direction="row"
+                        alignItems="center"
+                        spacing={1}
                       >
-                        Account Status
-                      </Typography>
-                      <Switch
-                        checked={userIsActive}
-                        onChange={handleActiveChange}
-                      />
-                    </Stack>
-                    <Stack width={"100%"} direction="row" spacing={1}>
-                      <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                        Account Created:
-                      </Typography>
-                      <Typography variant="body1">
-                        {new Date(data.createdAt).toLocaleDateString()}
-                      </Typography>
-                    </Stack>
-                    <Stack width={"100%"} direction="row" spacing={1}>
-                      <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                        Total Labs:
-                      </Typography>
-                      <Typography variant="body1">{"---"}</Typography>
-                    </Stack>
-
-                    <Stack width={"100%"} direction="row" spacing={1}>
-                      <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                        Total Courses:
-                      </Typography>
-                      <Typography variant="body1">{"---"}</Typography>
-                    </Stack>
-
-                    <Stack width={"100%"} direction="row" spacing={1}>
-                      <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                        Business Name:
-                      </Typography>
-                      <Typography variant="body1">{"---"}</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Online Status
+                        </Typography>
+                        <Switch
+                          checked={userIsActive}
+                          onChange={handleActiveChange}
+                        />
+                      </Stack>
+                      <Stack width="100%" direction="row" spacing={1}>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Account Created:
+                        </Typography>
+                        <Typography variant="body1">
+                          {new Date(data.createdAt).toLocaleDateString()}
+                        </Typography>
+                      </Stack>
+                      <Stack width="100%" direction="row" spacing={1}>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Total Labs:
+                        </Typography>
+                        <Typography variant="body1">{"---"}</Typography>
+                      </Stack>
+                      <Stack width="100%" direction="row" spacing={1}>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Total Courses:
+                        </Typography>
+                        <Typography variant="body1">{"---"}</Typography>
+                      </Stack>
+                      <Stack width="100%" direction="row" spacing={1}>
+                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                          Business Name:
+                        </Typography>
+                        <Typography variant="body1">{"---"}</Typography>
+                      </Stack>
                     </Stack>
                   </Stack>
-                </Stack>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Box>
           </Grid>
 
-          <Grid>
-            <Paper>
-              <PageTabs
-                tabs={tabs}
-                tabLabelsContainerStyle={{ border: "none" }}
-              />
-            </Paper>
+          {/* Main content */}
+          <Grid item xs={12} md={8.5}>
+            <Box sx={{ height: "100%" }}>
+              <Paper sx={{ height: "100%" }}>
+                <PageTabs
+                  tabs={tabs}
+                  tabLabelsContainerStyle={{ border: "none" }}
+                />
+              </Paper>
+            </Box>
           </Grid>
         </Grid>
       </Container>
