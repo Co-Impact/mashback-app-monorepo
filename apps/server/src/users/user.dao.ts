@@ -27,7 +27,24 @@ export class userDao {
   }
 
   getAllUsers() {
-    return this.prismaClient.user.findMany();
+    return this.prismaClient.user.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phoneNumber: true,
+        university: true,
+        dateOfBirth: true,
+        company: true,
+        position: true,
+        group: true,
+        isActive: true,
+        eventSubmissions: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
   updateUser(id: string, data) {

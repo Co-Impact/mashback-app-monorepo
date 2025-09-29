@@ -26,8 +26,12 @@ export class AuthController {
   }
 
   @Post('login')
-  login(@Body() body: LoginDto, @Ip() ip: string) {
-    return this.authService.login({ userData: body, ip });
+  login(
+    @Body() body: LoginDto,
+    @Ip() ip: string,
+    @Headers('user-agent') headers: any,
+  ) {
+    return this.authService.login({ userData: body, ip, headers });
   }
 
   @Get('logout')
