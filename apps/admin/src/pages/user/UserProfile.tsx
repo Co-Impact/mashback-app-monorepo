@@ -1,16 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Paper,
-  Stack,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Card, CardContent, Container, Grid, Paper, Stack, Switch, Typography } from "@mui/material";
 import { useParams } from "react-router";
 import UserProfileSkeleton from "./UserProfileSkeleton";
 import { PageTabs, TabItem } from "../../components/Tabs/Tabs";
@@ -19,7 +8,6 @@ import { useUpdateProfile } from "../../api/usersRequest/updateProfile.ts";
 import { toast } from "react-toastify";
 import UserTeamsTab from "./UserProfileTabs/UserTeamsTab.tsx";
 import UserStatisticsTab from "./UserProfileTabs/UserStatisticsTab.tsx";
-import UserBillingsTab from "./UserProfileTabs/UserBillingsTab.tsx";
 import UserDetailsTab from "./UserProfileTabs/UserDetailsTab.tsx";
 import UserEventsTab from "./UserProfileTabs/UserEventsTab.tsx";
 
@@ -42,7 +30,7 @@ const UserProfilePage: React.FC = () => {
         children: <UserDetailsTab currentUser={data!} />,
       },
       {
-        label: "Teams",
+        label: "Group",
         value: "teams",
         children: <UserTeamsTab currentUser={data!} />,
       },
@@ -56,11 +44,11 @@ const UserProfilePage: React.FC = () => {
         value: "statistics",
         children: <UserStatisticsTab currentUser={data!} />,
       },
-      {
-        label: "Billings",
-        value: "bilings",
-        children: <UserBillingsTab currentUser={data!} />,
-      },
+      // {
+      //   label: "Billings",
+      //   value: "bilings",
+      //   children: <UserBillingsTab currentUser={data!} />,
+      // },
     ],
     [data],
   );
@@ -76,7 +64,7 @@ const UserProfilePage: React.FC = () => {
     }
     try {
       setUserIsActive((prev) => !prev);
-      await updateProfile.mutateAsync({ id, isOnline: !userIsActive });
+      await updateProfile.mutateAsync({ id, isActive: !userIsActive });
     } catch (err) {
       setUserIsActive(!!data?.isOnline);
     }
@@ -113,7 +101,7 @@ const UserProfilePage: React.FC = () => {
                         spacing={1}
                       >
                         <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                          Online Status
+                          Active Status
                         </Typography>
                         <Switch
                           checked={userIsActive}
@@ -130,19 +118,13 @@ const UserProfilePage: React.FC = () => {
                       </Stack>
                       <Stack width="100%" direction="row" spacing={1}>
                         <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                          Total Labs:
+                          Company Name:
                         </Typography>
                         <Typography variant="body1">{"---"}</Typography>
                       </Stack>
                       <Stack width="100%" direction="row" spacing={1}>
                         <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                          Total Courses:
-                        </Typography>
-                        <Typography variant="body1">{"---"}</Typography>
-                      </Stack>
-                      <Stack width="100%" direction="row" spacing={1}>
-                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                          Business Name:
+                          Position:
                         </Typography>
                         <Typography variant="body1">{"---"}</Typography>
                       </Stack>

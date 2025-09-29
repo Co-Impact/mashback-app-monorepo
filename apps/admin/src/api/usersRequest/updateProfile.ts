@@ -6,7 +6,7 @@ import { backendInstance } from "../api";
 const updateProfile = async (
   data: Partial<UserProfile> & { id: string },
 ): Promise<UserProfile> => {
-  return (await backendInstance.put(`/users/${data.id}`, data)).data;
+  return (await backendInstance.patch(`/users/${data.id}`, data)).data;
 };
 
 export const useUpdateProfile = () => {
