@@ -1,10 +1,9 @@
 import { Control, Controller } from "react-hook-form";
 import { FC } from "react";
 import { TextField } from "@mui/material";
-import { CreateCTF } from "../../../api/types";
 
 interface Props {
-  control: Control<CreateCTF>;
+  control: Control<any>;
 }
 export const CTFConfiguration: FC<Props> = ({ control }) => {
   return (

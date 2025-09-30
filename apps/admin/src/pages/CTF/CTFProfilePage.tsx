@@ -1,17 +1,25 @@
-import {Card, CardContent, Container, Grid, Skeleton, Stack, Typography,} from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import DetailForm from "../../components/CtfProfile/DetailForm";
 import ShowSkeleton from "../../components/Skeleton/ShowSkeleton";
-import {Table} from "../../components/Table/GenericTable";
-import {useGetCTFById} from "../../api/ctfRequest/getCTF";
-import {useParams} from "react-router";
-import {LabTableColumns} from "./LabTableColumns";
+import { Table } from "../../components/Table/GenericTable";
+import { useParams } from "react-router";
+import { LabTableColumns } from "./LabTableColumns";
+import { useDeleteExample } from "../../api/exampleRequest/postRequest.ts";
 
 const CTFProfilePage = () => {
   const { id } = useParams();
 
-  const ctf = useGetCTFById(id!);
+  const { isPending, data } = useDeleteExample();
 
-  if (ctf.isLoading || !ctf.data) {
+  if (isPending || data) {
     return (
       <Stack spacing={4} width={"100%"}>
         <Skeleton variant="rectangular" height={300} width={"100%"} />
@@ -26,7 +34,7 @@ const CTFProfilePage = () => {
         <Grid item xs={12}>
           <Card sx={{ background: (theme) => theme.palette.background.paper }}>
             <CardContent>
-              <DetailForm data={ctf.data} />
+              <DetailForm data={data} />
             </CardContent>
           </Card>
         </Grid>
@@ -43,11 +51,11 @@ const CTFProfilePage = () => {
                   <Typography color={"text.primary"} variant="h6" gutterBottom>
                     Labs
                   </Typography>
-                  {ctf.isLoading ? (
+                  {isPending ? (
                     <ShowSkeleton viewType="table" />
                   ) : (
                     <Table
-                      data={ctf.data?.lab || []}
+                      data={data?.lab || []}
                       columnsProp={LabTableColumns}
                     />
                   )}

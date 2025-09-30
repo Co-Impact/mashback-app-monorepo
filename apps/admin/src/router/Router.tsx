@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router";
 import { Suspense } from "react";
 import { Skeleton } from "@mui/material";
 import {
-  BlogPage,
   BusinessPage,
   BusinessProfile,
   CoursePage,
@@ -11,6 +10,7 @@ import {
   CyberWarfarePage,
   EventPage,
   EventProfile,
+  GroupPage,
   HealthCheckPage,
   HomePage,
   LabProfile,
@@ -132,10 +132,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/blog",
+        path: "/group",
         element: (
           <Suspense fallback={<Skeleton />}>
-            <BlogPage />
+            <GroupPage />
           </Suspense>
         ),
       },

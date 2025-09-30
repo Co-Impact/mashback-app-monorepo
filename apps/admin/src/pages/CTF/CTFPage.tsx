@@ -1,14 +1,13 @@
-import {Box, Button, Container, Grid, Stack, Typography} from "@mui/material";
-import {FC, useEffect, useState} from "react";
-import {Table} from "../../components/Table/GenericTable";
-import {CTFForm} from "../../components/Dialog/CTFForm.tsx";
-import {useGetAllCTF} from "../../api/ctfRequest/getCTF.ts";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { Table } from "../../components/Table/GenericTable";
+import { CTFForm } from "../../components/Dialog/CTFForm.tsx";
 import ShowSkeleton from "../../components/Skeleton/ShowSkeleton.tsx";
-import {CTFTableColumn} from "./CtfTableColumns.tsx";
-import {useModal} from "../../hooks/useModal.tsx";
-import {CTFDisplayData} from "./type.ts";
-import {useGetActiveCtfFilter} from "../../api/runCtfRequest/getRunCtf.ts";
+import { CTFTableColumn } from "./CtfTableColumns.tsx";
+import { useModal } from "../../hooks/useModal.tsx";
+import { CTFDisplayData } from "./type.ts";
 import CardV2 from "../../components/Card/CardV2.tsx";
+import { useGetExample } from "../../api/exampleRequest/getRequest.ts";
 
 const CTFPage: FC = () => {
   const {
@@ -24,8 +23,8 @@ const CTFPage: FC = () => {
     close: closeCreateCtfModal,
   } = useModal();
 
-  const ctf = useGetAllCTF();
-  const activeCtf = useGetActiveCtfFilter();
+  const ctf = useGetExample();
+  const activeCtf = useGetExample();
   const [activeCtfData, setActiveCtfData] = useState<CTFDisplayData[]>([]);
 
   useEffect(() => {

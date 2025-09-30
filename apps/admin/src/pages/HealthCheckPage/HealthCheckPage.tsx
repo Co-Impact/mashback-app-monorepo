@@ -12,7 +12,6 @@ import {
 import SecurityIcon from "@mui/icons-material/Security";
 import ScienceIcon from "@mui/icons-material/Science";
 import EmailIcon from "@mui/icons-material/Email";
-import { useGetSystemHealth } from "../../api/systemHealthRequests/getSystemHealth";
 import ShowSkeleton from "../../components/Skeleton/ShowSkeleton";
 import { useState } from "react";
 import { red } from "@mui/material/colors";
@@ -22,6 +21,7 @@ import { fakeEventLogs } from "./data/fakeEventLogs";
 import { EventLogColumns } from "./EventLogColumns";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import CardV2 from "../../components/Card/CardV2";
+import { useGetExample } from "../../api/exampleRequest/getRequest.ts";
 
 export enum SystemHealthStatus {
   UP = "up",
@@ -62,7 +62,7 @@ export interface ServiceType {
 }
 
 const HealthCheckPage = () => {
-  const { data, isLoading } = useGetSystemHealth();
+  const { data, isLoading } = useGetExample();
   const [services, setServices] = useState<ServiceType[]>([]);
 
   const [filterType, setFilterType] = useState("all");

@@ -1,18 +1,13 @@
 import { Add, Edit } from "@mui/icons-material";
 import { Button, Stack, Typography } from "@mui/material";
-import { ILab } from "../../api/types";
 import { FC } from "react";
 import * as yup from "yup";
 import { useModal } from "../../hooks/useModal";
 
-const schema = yup.object({
-  diagram: yup.mixed(),
-});
-
-export type FormValues = yup.InferType<typeof schema>;
+export type FormValues = yup.InferType<any>;
 
 interface ManageDiagramProps {
-  data: ILab;
+  data: any;
 }
 const ManageDiagram: FC<ManageDiagramProps> = ({ data }) => {
   const { open } = useModal();

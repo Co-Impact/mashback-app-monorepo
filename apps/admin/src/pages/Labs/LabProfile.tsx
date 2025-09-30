@@ -1,16 +1,16 @@
 import { FC } from "react";
 import { Container, Grid, Skeleton, Stack } from "@mui/material";
 import { useParams } from "react-router";
-import { useGetLabByID } from "../../api/labsRequest/getLabs.ts";
 import ManageLabBasicDetails from "../../components/LabProfile/ManageLabBasicDetail.tsx";
 import ManageLabFlag from "../../components/LabProfile/ManageLabFlag.tsx";
 import ManageLabSteps from "../../components/LabProfile/ManageLabSteps.tsx";
 import ManageDiagram from "../../components/LabProfile/ManageDiagram.tsx";
 import ProfileCard from "../../components/LabProfile/LabProfileCard.tsx";
+import { useGetExampleById } from "../../api/exampleRequest/getRequest.ts";
 
 const LabProfile: FC = () => {
   const { id = "" } = useParams();
-  const { data } = useGetLabByID(id);
+  const { data } = useGetExampleById(id);
 
   if (!data) {
     return (

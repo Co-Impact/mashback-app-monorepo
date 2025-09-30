@@ -1,28 +1,27 @@
 import {
-    Box,
-    Button,
-    Container,
-    Divider,
-    Grid,
-    IconButton,
-    MenuItem,
-    Stack,
-    TextField,
-    Typography,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  IconButton,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import {FC, useEffect, useState} from "react";
-import {Controller, useFieldArray, useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
+import { FC, useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {useQueryClient} from "@tanstack/react-query";
-import {FormElementWithLabel} from "../FormElementWithLabel/FormElementWithLabel";
-import {ILab} from "../../api/types";
+import { useQueryClient } from "@tanstack/react-query";
+import { FormElementWithLabel } from "../FormElementWithLabel/FormElementWithLabel";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {Table} from "../Table/GenericTable";
-import {ITableColumn} from "../Table/types";
-import {useUpdateLab} from "../../api/labsRequest/postLabs";
-import {toast} from "react-toastify";
+import { Table } from "../Table/GenericTable";
+import { ITableColumn } from "../Table/types";
+import { toast } from "react-toastify";
+import { useDeleteExample } from "../../api/exampleRequest/postRequest.ts";
 
 const FlagTypes = ["ROOT", "USER", "ADMINISTRATOR", "MACHINE"];
 
@@ -33,11 +32,8 @@ const schema = yup.object({
 
 export type FormValues = yup.InferType<typeof schema>;
 
-interface ManageLabBasicDetailsProps {
-  data: ILab;
-}
-const ManageLabFlag: FC<ManageLabBasicDetailsProps> = ({ data }) => {
-  const update = useUpdateLab();
+const ManageLabFlag: FC<any> = ({ data }) => {
+  const update = useDeleteExample();
   const queryClient = useQueryClient();
   const [editMode, setEditMode] = useState(false);
 
@@ -50,7 +46,7 @@ const ManageLabFlag: FC<ManageLabBasicDetailsProps> = ({ data }) => {
     resolver: yupResolver(schema as any),
     defaultValues: {
       flag:
-        data?.flag?.map((item) => ({
+        data?.flag?.map((item: { flag: any; type: any; id: any }) => ({
           flag: item.flag,
           type: item.type,
           id: item.id,
@@ -62,18 +58,6 @@ const ManageLabFlag: FC<ManageLabBasicDetailsProps> = ({ data }) => {
     control,
     name: "flag",
   });
-
-  useEffect(() => {
-    if (!data?.flag?.length) return;
-    reset({
-      flag:
-        data?.flag?.map((item) => ({
-          flag: item.flag,
-          type: item.type,
-          id: item.id,
-        })) || [],
-    });
-  }, [data]);
 
   // Handle editing
   const handleEdit = () => setEditMode(true);

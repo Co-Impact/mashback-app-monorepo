@@ -14,9 +14,9 @@ import * as yup from "yup";
 import EditIcon from "@mui/icons-material/Edit";
 import { FormElementWithLabel } from "../FormElementWithLabel/FormElementWithLabel";
 import { FC, useState } from "react";
-import { ICaptureTheFlag } from "../../api/types";
-import { useUpdateCTF } from "../../api/ctfRequest/updateCTF";
+
 import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteExample } from "../../api/exampleRequest/postRequest.ts";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -35,14 +35,14 @@ const schema = yup.object().shape({
 type FormValue = yup.InferType<typeof schema>;
 
 interface DetailFormProps {
-  data: ICaptureTheFlag;
+  data: any;
 }
 
 const DetailForm: FC<DetailFormProps> = ({ data }) => {
   console.log(data);
   const [editMode, setEditMode] = useState(false);
-  const updateCtf = useUpdateCTF();
   const queryClient = useQueryClient();
+  const { mutate, isPending } = useDeleteExample();
   const {
     control,
     handleSubmit,
@@ -62,10 +62,10 @@ const DetailForm: FC<DetailFormProps> = ({ data }) => {
 
   async function onSubmit(formData: FormValue) {
     try {
-      await updateCtf.mutateAsync({ id: data.id, data: formData });
+      mutate({ id: data.id, data: formData });
       reset(formData);
       setEditMode(false);
-      queryClient.refetchQueries({ queryKey: ["ctf", data.id] });
+      await queryClient.refetchQueries({ queryKey: ["ctf", data.id] });
     } catch (err) {
       console.log(err);
     }
@@ -232,12 +232,8 @@ const DetailForm: FC<DetailFormProps> = ({ data }) => {
               >
                 Cancle
               </Button>
-              <Button
-                type="submit"
-                disabled={updateCtf.isPending}
-                variant="contained"
-              >
-                {updateCtf.isPending ? "Saving..." : "Save"}
+              <Button type="submit" disabled={isPending} variant="contained">
+                {isPending ? "Saving..." : "Save"}
               </Button>
             </Stack>
           )}

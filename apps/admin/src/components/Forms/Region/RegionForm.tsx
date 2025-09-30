@@ -13,11 +13,10 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { AwsRegion, AzureRegion, CloudProvider, LabServiceType } from "./types";
-import { useCreateRegion } from "../../../api/regionRequest/postRegion";
 import { Region } from "../../../api/types";
-import { useUpdateRegion } from "../../../api/regionRequest/updateRegion";
 import { toast } from "react-toastify";
-import { useQueryClient } from "@tanstack/react-query"; // Validation schema
+import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteExample } from "../../../api/exampleRequest/postRequest.ts"; // Validation schema
 
 // Validation schema
 
@@ -89,8 +88,8 @@ const RegionForm: React.FC<RegionFormProps> = ({
   onActionPerformed,
   selectedRegion,
 }) => {
-  const createRegion = useCreateRegion();
-  const updateRegion = useUpdateRegion();
+  const createRegion = useDeleteExample();
+  const updateRegion = useDeleteExample();
   const queryClient = useQueryClient();
   const [cachedRegion, setCachedRegion] = React.useState<string[]>([]);
 
@@ -149,7 +148,7 @@ const RegionForm: React.FC<RegionFormProps> = ({
       AWSRegion: selectedRegion.AWSRegion || "",
       AZURERegion: selectedRegion.AZURERegion || "",
     });
-  }, [selectedRegion]);
+  }, [reset, selectedRegion]);
 
   const cloudProvider = useWatch({ control, name: "cloudProvider" });
 

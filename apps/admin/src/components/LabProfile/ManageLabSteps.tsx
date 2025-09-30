@@ -15,11 +15,10 @@ import * as yup from "yup";
 import { useQueryClient } from "@tanstack/react-query";
 import { FormElementWithLabel } from "../FormElementWithLabel/FormElementWithLabel";
 import { Delete } from "@mui/icons-material";
-import { ILab } from "../../api/types";
 import { ITableColumn } from "../Table/types";
 import { Table } from "../Table/GenericTable";
-import { useUpdateLab } from "../../api/labsRequest/postLabs";
 import { toast } from "react-toastify";
+import { useDeleteExample } from "../../api/exampleRequest/postRequest.ts";
 
 // Updated schema with more fields
 const schema = yup.object({
@@ -28,11 +27,8 @@ const schema = yup.object({
 
 export type FormValues = yup.InferType<typeof schema>;
 
-interface ManageLabBasicDetailsProps {
-  data: ILab;
-}
-const ManageLabSteps: FC<ManageLabBasicDetailsProps> = ({ data }) => {
-  const update = useUpdateLab();
+const ManageLabSteps: FC<any> = ({ data }) => {
+  const update = useDeleteExample();
   const queryClient = useQueryClient();
   const [editMode, setEditMode] = useState(false);
 
@@ -44,13 +40,7 @@ const ManageLabSteps: FC<ManageLabBasicDetailsProps> = ({ data }) => {
   } = useForm<FormValues>({
     resolver: yupResolver(schema as any),
     defaultValues: {
-      labsSteps:
-        data?.labsSteps.map((item) => ({
-          title: item.title,
-          description: item.description,
-          step: item.step,
-          id: item.id,
-        })) || [],
+      labsSteps: [],
     },
   });
   const [counter, setCounter] = useState(0);
@@ -68,15 +58,9 @@ const ManageLabSteps: FC<ManageLabBasicDetailsProps> = ({ data }) => {
   useEffect(() => {
     if (!data?.labsSteps?.length) return;
     reset({
-      labsSteps:
-        data?.labsSteps.map((item) => ({
-          title: item.title,
-          description: item.description,
-          step: item.step,
-          id: item.id,
-        })) || [],
+      labsSteps: [],
     });
-  }, [data]);
+  }, [data, reset]);
 
   // Handle editing
   const handleEdit = () => setEditMode(true);
@@ -89,7 +73,7 @@ const ManageLabSteps: FC<ManageLabBasicDetailsProps> = ({ data }) => {
     }
     console.log(formData);
     await update.mutateAsync({ id: data.id, data: formData });
-    queryClient.refetchQueries({ queryKey: ["labs", data.id] });
+    await queryClient.refetchQueries({ queryKey: ["labs", data.id] });
     setEditMode(false);
   };
 

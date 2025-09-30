@@ -1,14 +1,6 @@
 import { FC, useState } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
-
-import { getPackageTableColumns } from "./packageTableColumns";
-import { getCouponColumns } from "./couponTableColumns";
-import { Table } from "../../components/Table/GenericTable.tsx";
 import { useModal } from "../../hooks/useModal.tsx";
-import { useGetAllPackages } from "../../api/packageRequest/getPackage.ts";
-import ShowSkeleton from "../../components/Skeleton/ShowSkeleton.tsx";
-import { IPackages } from "../../api/types.ts";
-import { useGetAllCoupons } from "../../api/couponRequest/getCoupons.ts";
 
 const PackagePage: FC = () => {
   const {
@@ -16,18 +8,12 @@ const PackagePage: FC = () => {
     isOpen: packageFormModalIsOpen,
     open: packageFormModalOpen,
   } = useModal();
-  const { data } = useGetAllPackages();
-  const coupons = useGetAllCoupons();
+
   const [defaultCouponVal, setDefaultCouponVal] = useState(null);
 
-  const couponColumns = getCouponColumns(handleCouponEdit);
-  const [defaultPackageFormValue, setDefaultPackageFormValue] =
-    useState<IPackages | null>(null);
-
-  const handleEditPackage = (data: IPackages) => {
-    setDefaultPackageFormValue(data);
-    packageFormModalOpen();
-  };
+  const [defaultPackageFormValue, setDefaultPackageFormValue] = useState<
+    any | null
+  >(null);
 
   function handleCouponEdit(row: any) {
     const data = {
@@ -49,9 +35,7 @@ const PackagePage: FC = () => {
     setDefaultPackageFormValue(null);
     packageFormModalOpen();
   };
-  const packageColumns = getPackageTableColumns({
-    onEdit: handleEditPackage,
-  });
+
   return (
     <Container>
       <Box
@@ -82,21 +66,21 @@ const PackagePage: FC = () => {
             <Typography color={"text.primary"} variant="subtitle1" mb={1}>
               Package List
             </Typography>
-            {data ? (
-              <Table data={data} columnsProp={packageColumns} />
-            ) : (
-              <ShowSkeleton columnCount={3} viewType="table" />
-            )}
+            {/*{data ? (*/}
+            {/*  <Table data={data} columnsProp={packageColumns} />*/}
+            {/*) : (*/}
+            {/*  <ShowSkeleton columnCount={3} viewType="table" />*/}
+            {/*)}*/}
           </Box>
           <Box sx={{ flex: 0.4 }}>
             <Typography color={"text.primary"} variant="subtitle1" mb={1}>
               Coupon List
             </Typography>
-            {coupons.data ? (
-              <Table data={coupons.data || []} columnsProp={couponColumns} />
-            ) : (
-              <ShowSkeleton columnCount={3} viewType="table" />
-            )}
+            {/*{coupons.data ? (*/}
+            {/*  <Table data={coupons.data || []} columnsProp={couponColumns} />*/}
+            {/*) : (*/}
+            {/*  <ShowSkeleton columnCount={3} viewType="table" />*/}
+            {/*)}*/}
           </Box>
         </Box>
       </Box>

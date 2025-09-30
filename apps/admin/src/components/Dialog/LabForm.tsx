@@ -1,21 +1,14 @@
 import { Box, Button, DialogContent, Stack } from "@mui/material";
-import {
-  CloudProvider,
-  CreateLabs,
-  Difficulty,
-  LabType,
-  OSType,
-} from "../../api/types.ts";
-import { useCreateNewLab } from "../../api/labsRequest/postLabs.ts";
+import { CloudProvider, Difficulty, OSType } from "../../api/types.ts";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useGetAllPackages } from "../../api/packageRequest/getPackage.ts";
 import { HorizontalSteps } from "../Steps/HorizontalSteps.tsx";
 import { LabDetailsForm } from "../Forms/Lab/LabDetailsForm.tsx";
 import { LabFlagsForm } from "../Forms/Lab/LabFlagsForm.tsx";
 import { LabConfigForm } from "../Forms/Lab/LabConfigForm.tsx";
 import { LabStepsForm } from "../Forms/Lab/LabStepsForm.tsx";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteExample } from "../../api/exampleRequest/postRequest.ts";
 
 interface Props {
   open?: boolean;
@@ -24,7 +17,7 @@ interface Props {
 
 export const LabForm: FC<Props> = ({ onClose }) => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const { data } = useGetAllPackages();
+  const { data } = useDeleteExample();
   const queryClient = useQueryClient();
   const packageData = data
     ? data.map((item: { name: any; id: any }) => ({
@@ -32,7 +25,7 @@ export const LabForm: FC<Props> = ({ onClose }) => {
         id: item.id,
       }))
     : [];
-  const { mutateAsync, isPending } = useCreateNewLab();
+  const { mutateAsync, isPending } = useDeleteExample();
   const steps: Array<string> = [
     "Lab Details",
     "Flag Information",
@@ -40,7 +33,7 @@ export const LabForm: FC<Props> = ({ onClose }) => {
     "Confirmation",
   ];
   const { control, handleSubmit, trigger, watch, reset, setValue } =
-    useForm<CreateLabs>({
+    useForm<any>({
       defaultValues: {
         name: "",
         packages: [],
@@ -58,14 +51,14 @@ export const LabForm: FC<Props> = ({ onClose }) => {
         point: 0,
         labsSteps: [{ description: "", title: "" }],
         flag: [],
-        type: LabType.RedTeam,
+        type: "STATIC",
         openBy: "",
         isActive: true,
         isCtf: false,
       },
     });
 
-  const onSubmit = async (data: CreateLabs) => {
+  const onSubmit = async (data: any) => {
     const formData = new FormData();
     console.log(data);
     for (const file of data.attachment as any) {

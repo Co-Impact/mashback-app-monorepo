@@ -1,8 +1,16 @@
 import { FC } from "react";
 import { Control, Controller, useFieldArray } from "react-hook-form";
-import { Box, Button, Container, Grid, IconButton, MenuItem, Stack, TextField } from "@mui/material";
-import { LabType } from "../../../api/types.ts";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  MenuItem,
+  Stack,
+  TextField,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Props {
   control?: Control<any, any> | undefined;
@@ -38,11 +46,11 @@ export const LabFlagsForm: FC<Props> = ({ control }) => {
             error={!!error}
             helperText={error?.message}
           >
-            {Object.entries(LabType).map(([key, value]) => (
-              <MenuItem key={key} value={key}>
-                {value}
-              </MenuItem>
-            ))}
+            {/*{Object.entries(LabType).map(([key, value]) => (*/}
+            {/*  <MenuItem key={key} value={key}>*/}
+            {/*    {value}*/}
+            {/*  </MenuItem>*/}
+            {/*))}*/}
           </TextField>
         )}
       />
@@ -71,7 +79,7 @@ export const LabFlagsForm: FC<Props> = ({ control }) => {
                     fullWidth
                     error={!!error}
                     helperText={error?.message}
-                    sx={{ height: '100%' }}
+                    sx={{ height: "100%" }}
                   />
                 )}
               />
@@ -92,7 +100,7 @@ export const LabFlagsForm: FC<Props> = ({ control }) => {
                     variant="outlined"
                     error={!!error}
                     helperText={error?.message}
-                    sx={{ height: '100%' }}
+                    sx={{ height: "100%" }}
                   >
                     {FlagTypes.map((type) => (
                       <MenuItem key={type} value={type}>
@@ -105,11 +113,17 @@ export const LabFlagsForm: FC<Props> = ({ control }) => {
             </Grid>
 
             {/* Delete Button */}
-            <Grid item xs={2} container justifyContent="center" alignItems="center">
+            <Grid
+              item
+              xs={2}
+              container
+              justifyContent="center"
+              alignItems="center"
+            >
               <IconButton
                 color="error"
                 onClick={() => remove(index)}
-                sx={{ height: '100%' }}
+                sx={{ height: "100%" }}
               >
                 <DeleteIcon />
               </IconButton>
@@ -119,10 +133,14 @@ export const LabFlagsForm: FC<Props> = ({ control }) => {
       </Container>
 
       {/* Add Flag Button */}
-      <Button sx={{ width: 'fit-content' }} variant="contained" onClick={handleAddRow}>
+      <Button
+        sx={{ width: "fit-content" }}
+        variant="contained"
+        onClick={handleAddRow}
+      >
         Add Flag
       </Button>
-      
+
       <Box sx={{ mt: 1 }} />
       {/* Price Field */}
       <Controller
@@ -130,7 +148,10 @@ export const LabFlagsForm: FC<Props> = ({ control }) => {
         control={control}
         rules={{
           required: "Price is required", // Validation Rule
-          min: { value: 0, message: "Price must be greater than or equal to 0" },
+          min: {
+            value: 0,
+            message: "Price must be greater than or equal to 0",
+          },
         }}
         render={({ field, fieldState: { error } }) => (
           <TextField
@@ -153,7 +174,10 @@ export const LabFlagsForm: FC<Props> = ({ control }) => {
         control={control}
         rules={{
           required: "Point Count is required", // Validation Rule
-          min: { value: 0, message: "Points must be greater than or equal to 0" },
+          min: {
+            value: 0,
+            message: "Points must be greater than or equal to 0",
+          },
         }}
         render={({ field, fieldState: { error } }) => (
           <TextField
@@ -169,7 +193,6 @@ export const LabFlagsForm: FC<Props> = ({ control }) => {
           />
         )}
       />
-
     </Stack>
   );
 };

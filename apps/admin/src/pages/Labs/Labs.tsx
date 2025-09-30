@@ -1,16 +1,16 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import { LabTables } from "../../api/data/data";
-import { useGetAllLabs } from "../../api/labsRequest/getLabs";
 import { Table } from "../../components/Table/GenericTable";
 import { LabForm } from "../../components/Dialog/LabForm.tsx";
 import ShowSkeletion from "../../components/Skeleton/ShowSkeleton.tsx";
 import { useModal } from "../../hooks/useModal.tsx";
 import CardV2 from "../../components/Card/CardV2.tsx";
+import { useGetExample } from "../../api/exampleRequest/getRequest.ts";
 
 const Labs: FC = () => {
-  const { data, isLoading } = useGetAllLabs();
-  const {Modal, close, isOpen, open} = useModal()
+  const { data, isLoading } = useGetExample();
+  const { Modal, close, isOpen, open } = useModal();
   const labsCards = [
     { title: "Total Labs", value: data?.length },
     { title: "Total Active Labs", value: 0, path: "/user" },

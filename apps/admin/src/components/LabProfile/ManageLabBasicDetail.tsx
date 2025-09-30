@@ -20,9 +20,9 @@ import * as yup from "yup";
 import { useQueryClient } from "@tanstack/react-query";
 import { FormElementWithLabel } from "../FormElementWithLabel/FormElementWithLabel";
 import { ErrorOutline } from "@mui/icons-material";
-import { Difficulty, ILab, LabType } from "../../api/types";
-import { useUpdateLab } from "../../api/labsRequest/postLabs";
+import { Difficulty } from "../../api/types";
 import { toast } from "react-toastify";
+import { useDeleteExample } from "../../api/exampleRequest/postRequest.ts";
 
 // Updated schema with more fields
 const schema = yup.object({
@@ -33,10 +33,7 @@ const schema = yup.object({
     .of(yup.string().required("Each tag must be a string"))
     .min(1, "At least one tag is required"),
   isActive: yup.boolean(),
-  type: yup
-    .string()
-    .required("Lab type is required")
-    .oneOf(Object.values(LabType), "Invalid lab type"),
+  type: yup.string().required("Lab type is required"),
   price: yup
     .number()
     .required("Price is required")
@@ -54,10 +51,10 @@ const schema = yup.object({
 export type FormValues = yup.InferType<typeof schema>;
 
 interface ManageLabBasicDetailsProps {
-  data: ILab;
+  data: any;
 }
 const ManageLabBasicDetails: FC<ManageLabBasicDetailsProps> = ({ data }) => {
-  const update = useUpdateLab();
+  const update = useDeleteExample();
   const queryClient = useQueryClient();
   const [editMode, setEditMode] = useState(false);
 
@@ -181,13 +178,7 @@ const ManageLabBasicDetails: FC<ManageLabBasicDetailsProps> = ({ data }) => {
                       value={field.value}
                       error={!!error}
                       helperText={error?.message}
-                    >
-                      {Object.entries(LabType).map(([key, value]) => (
-                        <MenuItem key={key} value={key}>
-                          {value}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                    ></TextField>
                   )}
                 />
               ) : (

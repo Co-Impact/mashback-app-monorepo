@@ -7,7 +7,7 @@ const CoursePage = lazy(() => import("../pages/course/CoursePage.tsx"));
 const CTFPage = lazy(() => import("../pages/CTF/CTFPage.tsx"));
 const CTFProfilePage = lazy(() => import("../pages/CTF/CTFProfilePage.tsx"));
 const Labs = lazy(() => import("../pages/Labs/Labs.tsx"));
-const BlogPage = lazy(() => import("../pages/blog/Blog.tsx"));
+const GroupPage = lazy(() => import("../pages/group/group.tsx"));
 const BusinessProfile = lazy(
   () => import("../pages/business/BusinessProfile.tsx"),
 );
@@ -35,7 +35,7 @@ export {
   HomePage,
   CoursePage,
   Labs,
-  BlogPage,
+  GroupPage,
   BusinessProfile,
   UserProfilePage,
   LabProfile,

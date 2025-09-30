@@ -1,36 +1,25 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import { CreateCTF, Difficulty } from "../../api/types.ts";
+import { Box, Button, DialogActions, DialogContent } from "@mui/material";
+import { Difficulty } from "../../api/types.ts";
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HorizontalSteps } from "../Steps/HorizontalSteps.tsx";
-import CloseIcon from "@mui/icons-material/Close";
 import { CTFIformation } from "../Forms/CTF/CTFInformation.tsx";
 import { CTFRoles } from "../Forms/CTF/CTFRoles.tsx";
 import { CTFConfiguration } from "../Forms/CTF/CTFConfiguration.tsx";
-import { useCreateCTF } from "../../api/ctfRequest/postCTF.ts";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDeleteExample } from "../../api/exampleRequest/postRequest.ts";
 
 interface Props {
   open?: boolean;
   onClose: () => void;
 }
 
-export const CTFForm: FC<Props> = ({
-  onClose,
-}) => {
+export const CTFForm: FC<Props> = ({ onClose }) => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const { mutateAsync, isPending } = useCreateCTF();
+  const { mutateAsync, isPending } = useDeleteExample();
   const queryClient = useQueryClient();
   const steps: Array<string> = ["Information", "Roles", "Confirmation"];
-  const { control, handleSubmit, trigger, reset } = useForm<CreateCTF>({
+  const { control, handleSubmit, trigger, reset } = useForm<any>({
     defaultValues: {
       name: "",
       description: "",
@@ -43,15 +32,15 @@ export const CTFForm: FC<Props> = ({
     },
   });
 
-  const onSubmit = async (data: CreateCTF) => {
+  const onSubmit = async (data: any) => {
     try {
       await mutateAsync(data);
-      queryClient.refetchQueries({ queryKey: ["ctf"] });
-      setActiveStep(0)
-      reset()
+      await queryClient.refetchQueries({ queryKey: ["ctf"] });
+      setActiveStep(0);
+      reset();
       onClose();
     } catch (err) {
-      console.log('Error creatng ctf ', err)
+      console.log("Error creatng ctf ", err);
     }
   };
 
@@ -65,10 +54,7 @@ export const CTFForm: FC<Props> = ({
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      encType="multipart/form-data"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
       <DialogContent>
         <Box mb={1}>
           <HorizontalSteps steps={steps} activeStep={activeStep} />

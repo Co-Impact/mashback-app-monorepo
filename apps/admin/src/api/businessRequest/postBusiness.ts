@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { backendInstance } from "../api";
-import { IBusiness, ICourses } from "../types";
+import { IBusiness } from "../types";
 import { toast } from "react-toastify";
 
-const createNewBusiness = async (data: IBusiness): Promise<ICourses> => {
+const createNewBusiness = async (data: IBusiness) => {
   return await backendInstance.post("/business", data);
 };
 
@@ -16,9 +16,9 @@ export const useCreateNewBusiness = () => {
     mutationKey: ["business"],
     mutationFn: (data: IBusiness) => createNewBusiness(data),
     onSuccess: () => {
-      toast.success("business create successfully!");
+      toast.success("business creates successfully!");
     },
-    onError: (error: { message: any }) => {
+    onError: (error: { message: string }) => {
       toast.error(`Error while create business: ${error.message}`);
     },
   });
@@ -29,9 +29,9 @@ export const useUpdateNewBusiness = () => {
     mutationKey: ["business"],
     mutationFn: (data: IBusiness) => createNewBusiness(data),
     onSuccess: () => {
-      toast.success("business create successfully!");
+      toast.success("business creates successfully!");
     },
-    onError: (error: { message: any }) => {
+    onError: (error: { message: string }) => {
       toast.error(`Error while create business: ${error.message}`);
     },
   });
@@ -44,7 +44,7 @@ export const useUpdateBusiness = () => {
     onSuccess: () => {
       toast.success("business updated successfully!");
     },
-    onError: (error: { message: any }) => {
+    onError: (error: { message: string }) => {
       toast.error(`Error updating business: ${error.message}`);
       throw error;
     },

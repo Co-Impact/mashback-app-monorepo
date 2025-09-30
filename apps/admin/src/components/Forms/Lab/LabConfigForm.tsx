@@ -13,19 +13,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { CloudProvider, CreateLabs, Difficulty } from "../../../api/types.ts";
-import { useGetAllCTF } from "../../../api/ctfRequest/getCTF.ts";
+import { CloudProvider, Difficulty } from "../../../api/types.ts";
+import { useGetExample } from "../../../api/exampleRequest/getRequest.ts";
 
 interface Props {
   control?: Control<any, any> | undefined;
   packageData: Array<{ name: string; id: string }>;
-  watch: UseFormWatch<CreateLabs>;
+  watch: UseFormWatch<any>;
 }
 
 export const LabConfigForm: FC<Props> = ({ control, packageData, watch }) => {
   const cloudProvider = watch("cloudProvider");
 
-  const ctf = useGetAllCTF();
+  const ctf = useGetExample();
   const isCtf = watch("isCtf");
 
   const ctfSelect: Record<string, string> =

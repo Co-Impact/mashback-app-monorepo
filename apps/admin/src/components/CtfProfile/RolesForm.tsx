@@ -1,31 +1,56 @@
-import React from 'react';
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { Box, Button, Grid, TextField, Typography, MenuItem, Switch, FormControlLabel, useTheme, IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { Involve, Difficulty, IPrize } from '../../api/types';
+import React from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  MenuItem,
+  Switch,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { Difficulty, Involve } from "../../api/types";
 
-// Fix: Use correct type for useForm and useFieldArray, and ensure prizes is always string[]
-
-// Fix: Ensure all fields are present in schema and required
 const schema: yup.ObjectSchema<RolesFormValues> = yup.object({
-  prizes: yup.array().of(
-    yup.object({
-      title: yup.string().required('Title is required'),
-      description: yup.string().required('Description is required'),
-      amount: yup.number().min(0, 'Amount must be at least 0').required('Amount is required'),
-    })
-  ).min(1, 'At least one prize is required').required(),
-  involve: yup.mixed<Involve>().oneOf(Object.values(Involve)).required('Involve is required'),
-  requiredPoints: yup.number().min(0).default(0).required('Required Points is required'),
-  reqiresRegistration: yup.boolean().default(true).required('Required'),
-  difficulty: yup.mixed<Difficulty>().oneOf(Object.values(Difficulty)).required('Difficulty is required'),
+  prizes: yup
+    .array()
+    .of(
+      yup.object({
+        title: yup.string().required("Title is required"),
+        description: yup.string().required("Description is required"),
+        amount: yup
+          .number()
+          .min(0, "Amount must be at least 0")
+          .required("Amount is required"),
+      }),
+    )
+    .min(1, "At least one prize is required")
+    .required(),
+  involve: yup
+    .mixed<Involve>()
+    .oneOf(Object.values(Involve))
+    .required("Involve is required"),
+  requiredPoints: yup
+    .number()
+    .min(0)
+    .default(0)
+    .required("Required Points is required"),
+  reqiresRegistration: yup.boolean().default(true).required("Required"),
+  difficulty: yup
+    .mixed<Difficulty>()
+    .oneOf(Object.values(Difficulty))
+    .required("Difficulty is required"),
 });
 
 export type RolesFormValues = {
-  prizes: IPrize[];
+  prizes: any[];
   involve: Involve;
   requiredPoints: number;
   reqiresRegistration: boolean;
@@ -33,14 +58,17 @@ export type RolesFormValues = {
 };
 
 const defaultValues: RolesFormValues = {
-  prizes: [{ title: '', description: '', amount: 0 }],
+  prizes: [{ title: "", description: "", amount: 0 }],
   involve: Involve.TEAM,
   requiredPoints: 0,
   reqiresRegistration: true,
   difficulty: Difficulty.EASY,
 };
 
-export const RolesForm: React.FC<{ onSubmit?: (data: RolesFormValues) => void; initialValues?: Partial<RolesFormValues> }> = ({ onSubmit, initialValues }) => {
+export const RolesForm: React.FC<{
+  onSubmit?: (data: RolesFormValues) => void;
+  initialValues?: Partial<RolesFormValues>;
+}> = ({ onSubmit, initialValues }) => {
   const theme = useTheme();
   const {
     control,
@@ -49,19 +77,33 @@ export const RolesForm: React.FC<{ onSubmit?: (data: RolesFormValues) => void; i
   } = useForm<RolesFormValues>({
     resolver: yupResolver(schema) as any,
     defaultValues: { ...defaultValues, ...initialValues },
-    mode: 'onTouched',
+    mode: "onTouched",
   });
-  const { fields, append, remove } = useFieldArray({ control, name: 'prizes' });
+  const { fields, append, remove } = useFieldArray({ control, name: "prizes" });
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit as any)} sx={{ width: '100%' }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit as any)}
+      sx={{ width: "100%" }}
+    >
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="subtitle1" color={theme.palette.text.primary} gutterBottom>
+          <Typography
+            variant="subtitle1"
+            color={theme.palette.text.primary}
+            gutterBottom
+          >
             Prizes
           </Typography>
           {fields.map((field, idx) => (
-            <Box key={field.id} display="flex" alignItems="center" mb={1} gap={1}>
+            <Box
+              key={field.id}
+              display="flex"
+              alignItems="center"
+              mb={1}
+              gap={1}
+            >
               <Controller
                 name={`prizes.${idx}.title` as const}
                 control={control}
@@ -71,8 +113,7 @@ export const RolesForm: React.FC<{ onSubmit?: (data: RolesFormValues) => void; i
                     size="small"
                     variant="outlined"
                     label={`Title`}
-                    error={!!errors.prizes?.[idx]?.title}
-                    helperText={errors.prizes?.[idx]?.title?.message}
+                    helperText={""}
                     sx={{ flex: 1 }}
                   />
                 )}
@@ -86,8 +127,7 @@ export const RolesForm: React.FC<{ onSubmit?: (data: RolesFormValues) => void; i
                     size="small"
                     variant="outlined"
                     label={`Description`}
-                    error={!!errors.prizes?.[idx]?.description}
-                    helperText={errors.prizes?.[idx]?.description?.message}
+                    helperText={""}
                     sx={{ flex: 2 }}
                   />
                 )}
@@ -102,18 +142,26 @@ export const RolesForm: React.FC<{ onSubmit?: (data: RolesFormValues) => void; i
                     size="small"
                     variant="outlined"
                     label={`Amount`}
-                    error={!!errors.prizes?.[idx]?.amount}
-                    helperText={errors.prizes?.[idx]?.amount?.message}
+                    helperText={""}
                     sx={{ width: 100 }}
                     inputProps={{ min: 0 }}
                   />
                 )}
               />
-              <IconButton aria-label="remove" onClick={() => remove(idx)} disabled={fields.length === 1}>
+              <IconButton
+                aria-label="remove"
+                onClick={() => remove(idx)}
+                disabled={fields.length === 1}
+              >
                 <RemoveIcon fontSize="small" />
               </IconButton>
               {idx === fields.length - 1 && (
-                <IconButton aria-label="add" onClick={() => append({ title: '', description: '', amount: 0 })}>
+                <IconButton
+                  aria-label="add"
+                  onClick={() =>
+                    append({ title: "", description: "", amount: 0 })
+                  }
+                >
                   <AddIcon fontSize="small" />
                 </IconButton>
               )}
@@ -193,14 +241,25 @@ export const RolesForm: React.FC<{ onSubmit?: (data: RolesFormValues) => void; i
             control={control}
             render={({ field }) => (
               <FormControlLabel
-                control={<Switch {...field} checked={field.value} color="primary" />}
-                label={<Typography color={theme.palette.text.primary}>Requires Registration</Typography>}
+                control={
+                  <Switch {...field} checked={field.value} color="primary" />
+                }
+                label={
+                  <Typography color={theme.palette.text.primary}>
+                    Requires Registration
+                  </Typography>
+                }
               />
             )}
           />
         </Grid>
         <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 1 }}
+          >
             Save Roles
           </Button>
         </Grid>
